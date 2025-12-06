@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add_Client |Treasure </title>
+</head>
+<style>
+    * {
+        font-family:sans-serif;
+        margin: 0;
+    }
+    body {
+        background-color: rgb(231, 231, 231);
+    }
+    main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        gap:4px;
+    }
+
+    form {
+        border: 1px solid rgb(209, 209, 209);
+        box-shadow: 1px 5px 10px rgb(167, 167, 167);
+        display: flex;
+        flex-direction: column;
+        padding: 50px;
+        gap: 5px;
+        width: 600px;
+        border-radius: 15px;
+        transition: all .3s;
+        align-items: center;
+    }
+
+    h2{
+        margin-bottom: 10px;
+        color: rgba(4, 101, 4, 0.852);
+    }
+
+    .d1 {
+        background-color:green ;
+        padding-left: 8px;
+        width: 100%;
+        height: 40px;
+        margin-bottom: 8px;
+    }
+
+    .d2 {
+        background-color: rgb(231, 231, 231);
+        height: 42px;
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        border-bottom-left-radius: 50px;
+        border-top-right-radius: 50px;
+        position: absolute;
+        z-index: 1;
+    }
+
+    form:hover {
+        transform: scale(1.01);
+
+    }
+
+    input {
+        width: 100%;
+        height: 40px;
+        font-size: 17px;
+        padding-inline:10px ;
+        outline: none;
+        border: none;
+        background-color: rgb(231, 231, 231);
+        border-bottom: 1px solid gray;
+        margin-bottom: 10px;
+    }
+    
+    .btn{
+        width: 100%;
+    }
+
+    button{
+        width: 50%;
+        float: right;
+        height: 50px;
+        font-size: 20px;
+        border: none;
+        border-radius: 5px;
+        color: gainsboro;
+        background-color: rgb(8, 68, 99);
+    }
+
+</style>
+
+<body>
+    <main>
+                <p id="msg" style="color: green; font-size: 18px;"></p>
+
+        <form id="formData">
+            <h2>Add Client</h2>
+            <div class="d1">
+                <div class="d2">
+                    <p>Add details of your client here</p>
+                </div>
+            </div> 
+            <input type="text" name="Name" id="Name" placeholder="Name">
+            <input type="email" name="Email" id="Email" placeholder="Email">
+            <input type="text" name="Tel" id="Tel" placeholder="Phone">
+
+            <div class="btn">
+            <button type="submit">Add</button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        document.getElementById('formData').addEventListener('submit', async(e)=>{
+            e.preventDefault();
+
+            const name=document.getElementById('Name').value.trim()
+            const email=document.getElementById('Email').value.trim()
+            const tel=document.getElementById('Tel').value.trim()
+            const msg=document.getElementById('msg')
+
+            const res = await fetch('/add', {
+                method: "POST",
+                headers: {
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+                    Name:name,
+                    Email:email,
+                    Tel:tel
+                })
+            })
+            
+            const data = await res.json();
+            console.log(data.message);
+            msg.innerText = data.message;
+        }) 
+    </script>
+
+</body>
+</html>

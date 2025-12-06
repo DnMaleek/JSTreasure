@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Treasure</title>
+</head>
+<style>
+    * {
+        font-family:sans-serif;
+        margin: 0;
+    }
+    body {
+        background-color: rgb(231, 231, 231);
+    }
+
+    .intro{
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+    header {
+        padding: 20px;
+        background-color: rgb(231, 231, 231);
+    }
+    h1 {
+        text-align: center;
+    }
+    main {
+        display: flex;
+        justify-content: center;
+        gap: 5rem;
+        margin-top: 2rem;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 50px 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        border-radius: 8px;
+        border: 1px solid rgb(239, 239, 239);
+        transition: all 0.3s;
+    }
+
+    .content:hover {
+        border: 2px solid rgb(239, 239, 239);
+        background-color: rgb(225, 225, 225);
+        transform: scale(1.1) translateY(10px) rotate(0.5deg);
+    }
+    
+    button{
+        padding: 10px 30px;
+        border: none;
+        border-radius: 5px;   
+        background-color: rgb(8, 68, 99);
+    }
+
+    a {
+        text-decoration: none;
+        color: gainsboro;
+    }
+
+</style>
+<body>
+<header>
+   <h1>TREASURE DASHBOARD</h1> 
+</header>
+<hr> 
+<div class="intro">
+    <p>Manage your clients transaction daily</p>
+</div>
+<main>
+    <div class="content">
+        <h2>Add client</h2>
+        <p>Add a new client with name, phone, and email.</p>
+        <button><a href="/add">GO</a></button>
+    </div>
+
+    <div class="content">
+        <h2>View clients</h2>
+        <p>View clients with their specific transactions.</p>
+        <button>GO</button>
+    </div>
+
+    <div class="content">
+        <h2>Export Transactios</h2>
+        <p>Download transactions as a CSV file between dates.</p>
+        <button>GO</button>
+    </div>
+</main>
+
+</body>
+</html>

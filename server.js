@@ -43,6 +43,26 @@ app.get('/add', (req,res) =>{
     res.sendFile(path.join(__dirname,'public','add_client.html'))
 })
 
+// serve the page
+app.get('/view_clients', (req,res) =>{
+    res.sendFile(path.join(__dirname,'public','view_clients.html'))
+})
+
+// get the page data
+app.get('/view_clients_data', (req, res) => {
+    const sql = "SELECT * FROM clients"
+
+    db.query(sql,(err,result)=>{
+        if (err) throw err;
+
+        if (result.length > 0) {
+            return res.json(result);
+        }  
+
+    })
+}) 
+
+//Add user 
 app.post('/add', (req,res) =>{
    const {Name, Email , Tel} = req.body;
 
@@ -56,13 +76,27 @@ app.post('/add', (req,res) =>{
         return;
    }
 
-   const sql= "INSERT INTO clients (Name, Email, Tel) VALUES (?,?,?)"
+   db.query("SELECT * FROM clients WHERE Email = ?",[Email],(err, result)=>{
+                if (err) throw err;
 
-   db.query(sql,[Name, Email ,Tel], (err)=>{
-    if (err) throw err;
+                if (result.length > 0){
+                    return res.status(404).json({message:"Email already exist"})
+                }
 
-    res.status(200).json({message:'Client added sucessfully'})
-   })
+                const sql= "INSERT INTO clients (Name, Email, Tel) VALUES (?,?,?)"
+
+                db.query(sql,[Name, Email ,Tel], (err)=>{
+                    if (err) throw err;
+
+                    res.status(200).json({message:'Client added sucessfully'})
+                })
+
+
+                }
+
+            )
+
+
 
 })
 

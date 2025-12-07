@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Clients | Treasure</title>
+</head>
+
+<style>
+       * {
+        font-family:sans-serif;
+        margin: 0;
+    }
+    body {
+        background-color: rgb(231, 231, 231);
+        display: flex;
+        justify-content: center;
+
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        min-width: 1080px;
+        
+    }
+
+    .heading { 
+        margin-top: 20px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-inline: 5px;
+        padding-right: 15px;
+    }
+
+    .search {
+        background-color: rgb(66, 143, 210);
+        width: 400px;
+        height: 40px;
+        border-radius: 20px;
+    }
+   
+    .search input{
+        width: 400px;
+        height:40px;
+        border-radius:20px;
+        outline: none;
+        border: 2px solid rgb(201, 201, 201);
+        font-size: 17px;
+        padding-inline-start: 10px;
+    }
+
+    table, thead, th, td{
+        border: 1px solid rgb(148, 148, 148);
+        border-collapse: collapse;
+        padding: 10px;
+    }
+    thead{
+        background-color: rgb(114, 173, 198);
+
+    }
+    tr:hover {
+        background-color: rgb(114, 173, 198);
+    }
+    tr button {
+        padding: 2px 10px;
+        border: none;
+        border-radius: 2px;
+        color: white;
+    }
+
+</style>
+
+<body>
+   <div class="container">
+    <div class="heading">
+        <h2>LIST OF CLIENTS</h2>
+        <div class="search">
+            <input type="text" name="" id="" placeholder="Search clients here....">
+        </div>
+
+    </div>
+     
+    <table>
+        <thead>
+            <tr>
+                <th>SN</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="tableData">
+        </tbody>
+    </table>
+
+   </div>
+
+
+<script>
+    async function fetchData() {
+
+        const tableData = document.getElementById('tableData')
+
+        const responce=await fetch('/view_clients_data');
+        const data = await responce.json();
+        console.log(data)
+
+        for (let d of data){
+            tableData.innerHTML += `
+            <tr>
+                <td>${d.Id}</td>    
+                <td>${d.Name}</td>    
+                <td>${d.Email}</td>    
+                <td>${d.Tel}</td>
+                <td style="display: flex; justify-content: center; gap: 5px; ">
+                    <button style="background-color: rgb(114, 173, 198);">View</button>
+                    <button style="background: #ff3232;">Delete</button>
+                </td>  
+            </tr>
+            `
+        }
+   
+    }
+    fetchData();
+</script>
+
+</body>
+</html>

@@ -118,8 +118,10 @@
                 <td>${d.Email}</td>    
                 <td>${d.Tel}</td>
                 <td style="display: flex; justify-content: center; gap: 5px; ">
-                    <button style="background-color: rgb(114, 173, 198);">View</button>
-                    <button style="background: #ff3232;">Delete</button>
+                    <a href='/view_client/${d.Id}'>
+                        <button style="background-color: rgb(114, 173, 198);">View</button>
+                    </a>
+                        <button style="background: #ff3232;">Delete</button>
                 </td>  
             </tr>
             `

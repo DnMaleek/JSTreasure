@@ -100,6 +100,34 @@ app.post('/add', (req,res) =>{
 
 })
 
+app.get('/view_client/:client_id', (req, res) => {
+
+    res.sendFile(path.join(__dirname , 'public' , 'view_client.html'))
+    
+})
+
+//fetch user by id
+
+app.post ('/view_client/:client_id', (req,res) => {
+    const id = req.params.client_id;
+
+    const sql = "SELECT * FROM clients WHERE id=?"
+
+    db.query(sql, [id], (error, result) => {
+        if (error) throw error;
+
+        if (result.length===0) {
+            res.status(500).json({message:"Client doesn't exist"})
+            return;
+        }
+
+        const client = result[0]
+        res.json(client)
+
+    })
+
+})
+
 app.listen(5000,()=>{
     console.log("http://localhost:5000")
 })

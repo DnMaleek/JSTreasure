@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View client | Treasure</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<style>
+    * {
+        font-family:sans-serif;
+        margin: 0;
+    }
+
+    body {
+        background-color: rgb(231, 231, 231);
+    }
+
+    main {
+      
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+
+    }
+
+    .container {
+        width: 80%;
+        
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+
+
+    .bar {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    .bar button {
+        padding: 10px 15px;
+        border-radius: 8px;
+        border: 0px solid rgb(231, 231, 231);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        transition: all 0.3s;
+
+    }
+
+    .bar button:hover {
+        border: 1px solid white;
+        transform: scale(1.1);
+    }
+
+       table, thead, th, td{
+        border: 1px solid rgb(148, 148, 148);
+        border-collapse: collapse;
+        padding: 10px;
+    }
+    thead{
+        background-color: rgb(114, 173, 198);
+
+    }
+    tr:hover {
+        background-color: rgb(114, 173, 198);
+    }
+    tr button {
+        padding: 2px 10px;
+        border: none;
+        border-radius: 2px;
+        color: white;
+    }
+
+</style>
+<body>
+    <main>
+        <div class="container">
+                <h2 id="clientName">Client Name <span><i class="fa-solid fa-user-pen"></i></span></h2>
+
+            <div class="bar">
+                <button><i class="fa-solid fa-plus"></i> Add Transaction </button>
+                <p id="balance" style="font-size: 17px; font-weight: bold;">Balance</p>
+
+            </div>
+
+            <table style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>In</th>
+                        <th>Out</th>
+                        <th>Desc</th>
+                        <th>Action</th>
+
+                    </tr>
+                </thead>
+
+                <tbody id="data">
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+
+            const clientId = window.location.pathname.split('/').pop();
+            
+            async function loadClient() {
+                const responce = await fetch(`/view_client/${clientId}` , {
+                    method:"POST" ,
+                    headers: {'Content-Type': 'application/json'}
+                });
+                
+                const client = await responce.json();
+
+                document.getElementById('clientName').innerHTML=client.Name + ' <span><i class="fa-solid fa-user-pen"></i></span>';
+            }
+
+            loadClient();
+          
+        </script>
+
+    </main>
+</body>
+</html>

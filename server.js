@@ -108,7 +108,7 @@ app.get('/view_client/:client_id', (req, res) => {
 
 //fetch user by id
 
-app.post ('/view_client/:client_id', (req,res) => {
+app.post('/view_client/:client_id', (req,res) => {
     const id = req.params.client_id;
 
     const sql = "SELECT * FROM clients WHERE id=?"
@@ -127,6 +127,103 @@ app.post ('/view_client/:client_id', (req,res) => {
     })
 
 })
+
+//add transaction per client
+
+app.post('/add_transaction', (req, res) => {
+    const { clientId, type, amount, desc } = req.body;
+
+    if (!clientId || !type || !amount) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const sql = `
+        INSERT INTO transactions (client_id, \`in\`, \`out\`, description)
+        VALUES (?, ?, ?, ?)
+    `;
+
+    let inAmount = 0;
+    let outAmount = 0;
+
+    if (type === "in") {
+        inAmount = amount;
+    } else if (type === "out") {
+        outAmount = -amount;
+    } else {
+        return res.status(400).json({ message: "Invalid transaction type" });
+    }
+
+    db.query(sql, [clientId, inAmount, outAmount, desc], (error) => {
+        if (error) {
+            return res.status(500).json({ message: "Database Error", error });
+        }
+        res.json({ message: "Transaction Added Successfully!" });
+    });
+});
+
+// Get balance for a specific client
+app.get('/balance/:clientId', (req, res) => {
+    const clientId = req.params.clientId;
+
+    if (!clientId) {
+        return res.status(400).json({ message: "Missing clientId" });
+    }
+
+    const sql = `
+        SELECT 
+            SUM(\`in\`) AS totalIn,
+            SUM(\`out\`) AS totalOut,
+            SUM(\`in\`) + SUM(\`out\`) AS balance
+        FROM transactions
+        WHERE client_id = ?
+    `;
+
+    db.query(sql, [clientId], (error, results) => {
+        if (error) {
+            return res.status(500).json({ message: "Database Error", error });
+        }
+
+        // results[0] will have totalIn, totalOut, balance
+        res.json({
+            totalIn: results[0].totalIn || 0,
+            totalOut: results[0].totalOut || 0,
+            balance: results[0].balance || 0
+        });
+    });
+});
+
+
+app.post('/transactions', (req, res) => {
+    const { clientId } = req.body;
+
+    const sql = "SELECT * FROM transactions WHERE client_id = ?";
+
+    db.query(sql, [clientId], (error, results) => {
+        if(error) {
+        return res.status(400).json({message: Error.err})
+        }
+        res.status(200).json(results)
+    });
+})
+
+app.delete("/delete/:clientId", (req, res) => {
+    const clientId = req.params.clientId;
+
+    const sql = "DELETE FROM clients WHERE id = ?";
+
+    db.query(sql, [clientId], (error, result) => {
+        if (error) {
+            return res.status(500).json({ message: "Error while deleting client", error });
+        }
+
+        // Optionally, check if a row was actually deleted
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Client not found" });
+        }
+
+        res.json({ message: "Client Deleted Successfully!" });
+    });
+});
 
 app.listen(5000,()=>{
     console.log("http://localhost:5000")

@@ -78,15 +78,119 @@
         color: white;
     }
 
+    .popbg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height:100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popcard {
+        background-color: rgb(231, 231, 231);
+        padding: 30px 20px;
+        border-radius: 8px;
+        width: 400px;
+        text-align: center;
+        animation: pop 3s ease;
+    }
+
+    @keyframes pop {
+        form {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        
+        to{
+            transform:scale(1) ;
+            opacity: 1;
+        }
+    }
+
+    .cancelBtn {
+        display: flex;
+        flex-direction: column;
+        align-items:flex-end;
+    }
+
+    #cancelBtn {
+        height: 40px;
+        width: 40px;
+        font-size: 30px;
+        padding: 0;
+        border: none;
+        color: red;
+        background-color: rgb(231, 231, 231);
+
+    }
+
+    .addTransaction {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+
+    }
+    .addTransaction > h2 {
+        color: rgb(114, 173, 198);
+        margin-bottom: 20px;
+    }
+
+    .addTransaction > button {
+        width: 40%;
+        padding: 8px 20px;
+        border:2px solid white;
+        border-radius: 8px;
+        transition: all .3s ease;
+    }
+
+    .addTransaction > button:hover{
+        transform: scale(1.05) translate(-3px);
+    }
+
+    form > select, input {
+        width: 100%;
+        height: 40px;
+        text-align: center;
+        outline: none;
+        border: none;
+        
+    }
+    .status {
+        position: absolute;
+        top: 40px;
+        right: 40px;
+        z-index: 100;
+        color: rgba(255, 255, 255, 0.895);
+    }
+
+    #msg {
+        background: rgba(38, 174, 38, 0.874);
+        padding-inline: 20px;
+        padding-top: 5px; 
+        padding-bottom: 5px; 
+        font-size: 12px;
+    }
+
+
 </style>
 <body>
+    <div class="status">
+        <p id="msg">This is it</p>
+    </div>
     <main>
         <div class="container">
                 <h2 id="clientName">Client Name <span><i class="fa-solid fa-user-pen"></i></span></h2>
 
             <div class="bar">
-                <button><i class="fa-solid fa-plus"></i> Add Transaction </button>
-                <p id="balance" style="font-size: 17px; font-weight: bold;">Balance</p>
+                <button id="openPopUp"><i class="fa-solid fa-plus"></i> Add Transaction </button>
+                <p style="font-size: 17px; font-weight: bold;">Balance: <span id="balance"></span></p>
 
             </div>
 
@@ -110,6 +214,36 @@
             </table>
         </div>
 
+
+        <div class="popbg" id="popbg">
+
+            <div class="popcard">
+                <div class="cancelBtn" >
+                    <button id="cancelBtn">
+                       <i class="fa-regular fa-circle-xmark fa-shake"></i>
+                    </button>
+                </div>
+
+                <form class="addTransaction" id="addTransaction">
+                    <h2>Add client transaction here</h2>
+                    <select id="transType">
+                        <option value="">---Select Transaction Type---</option>
+                        <option value="in">In</option>
+                        <option value="out">Out</option>
+                    </select>
+                    <input type="number" id="amount" placeholder="Enter Amount" max="1000000000">
+                    <input type="text" name="" id="description" placeholder="Comment (optional)">
+                    <button type="submit">Add</button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    
         <script>
 
             const clientId = window.location.pathname.split('/').pop();
@@ -127,8 +261,127 @@
 
             loadClient();
           
-        </script>
+            const popBtn =document.getElementById('openPopUp');
+            const popBg =document.getElementById('popbg');
+            const cancelBtn =document.getElementById('cancelBtn');
 
-    </main>
+
+            popBtn.addEventListener('click', ()=>{
+                popBg.style.display='flex'
+            })
+            
+            cancelBtn.addEventListener('click',()=>{
+                popBg.style.display='none'
+            })
+
+            // Submitting Transactions
+        const transForm = document.getElementById('addTransaction');
+
+        transForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Collect values
+            const type = document.getElementById('transType').value;
+            const amount = document.getElementById('amount').value;
+            const desc = document.getElementById('description').value;
+
+            // Creating data object
+            const data = {
+                clientId, // This already exists (---Global Variable---)
+                type,
+                amount,
+                desc
+            };
+
+            try {
+                // Sending Data
+                const response = await fetch('/add_transaction', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    // Waiting for response from the server
+                    const res = await response.json();
+                    console.log(res);
+
+                    // ✅ Reset the form
+                    transForm.reset();
+
+                    // ✅ Reload transactions and balance after successful addition
+                    await loadTransaction();
+                    await displayBalance();
+                } else {
+                    console.error('Server responded with an error!');
+                }
+            } catch (error) {
+                console.error('Error submitting transaction:', error);
+            }
+        });
+
+        const loadTransaction = async () => {
+            const res = await fetch("/transactions", {
+                method:"POST",
+                headers: {
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({clientId})
+            });
+
+            try {
+                const data = await res.json()
+
+                const tableData = document.getElementById('data');
+                tableData.innerHTML = "";
+
+                data.forEach((trans, index) => {
+                    const trElement = document.createElement('tr');
+
+                    // Assuming trans.date holds the timestamp
+                    const dateObj = new Date(trans.date); // convert string to Date object
+
+                    // Extract date (YYYY-MM-DD)
+                    const date = dateObj.toLocaleDateString(); // e.g., 12/13/2025
+
+                    // Extract time (HH:MM:SS)
+                    const time = dateObj.toLocaleTimeString(); // e.g., 14:03:45
+
+                    trElement.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${date}</td>
+                        <td>${time}</td>
+                        <td>${trans.in}</td>
+                        <td style="color: red">${trans.out}</td>
+                        <td>${trans.description}</td>
+                        <td>Actions</td>
+                    `;
+                    tableData.appendChild(trElement);
+                });
+            }catch(error) {
+                console.log('Error has occur: ', error)
+            }
+        }
+
+        loadTransaction();
+
+        const displayBalance = async () => {
+            const balance = document.getElementById("balance");
+            const res = await fetch(`/balance/${clientId}`);
+
+            try {
+                const data = await res.json()
+                balance.innerText = data.balance;
+            }catch(error) {
+                console.log(error)
+            }
+        }    
+        
+        displayBalance();
+        
+
+        </script>
 </body>
 </html>

@@ -55,7 +55,7 @@ app.get('/view_clients_data', (req, res) => {
     db.query(sql,(err,result)=>{
         if (err) throw err;
 
-        if (result.length > 0) {
+        if (result.length >= 0) {
             return res.json(result);
         }  
 

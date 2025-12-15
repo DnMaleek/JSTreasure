@@ -171,7 +171,7 @@ app.get('/balance/:clientId', (req, res) => {
     }
 
     const sql = `
-        SELECT 
+        SELECT
             SUM(\`in\`) AS totalIn,
             SUM(\`out\`) AS totalOut,
             SUM(\`in\`) + SUM(\`out\`) AS balance
@@ -197,7 +197,7 @@ app.get('/balance/:clientId', (req, res) => {
 app.post('/transactions', (req, res) => {
     const { clientId } = req.body;
 
-    const sql = "SELECT * FROM transactions WHERE client_id = ?";
+    const sql = "SELECT * FROM transactions WHERE client_id = ? ORDER BY id DESC";
 
     db.query(sql, [clientId], (error, results) => {
         if(error) {
@@ -225,6 +225,24 @@ app.delete("/delete/:clientId", (req, res) => {
         res.json({ message: "Client Deleted Successfully!" });
     });
 });
+
+app.delete('/transaction/delete/:trans_id', (req, res) => {
+    const transId = req.params.trans_id;
+
+    const sql = 'DELETE FROM transactions WHERE id = ?';
+
+    db.query(sql, [transId], (error, results) => {
+        if(error) {
+            return res.status(500).json({message: "Error while deleting transaction: ", error})
+        }
+
+        if(results.affectedRows === 0) {
+            res.status(404).json({message: "Transaction not found!"})
+        }
+
+        res.status(200).json({message: "Transaction Deleted successfylly!"})
+    })
+})
 
 app.listen(5000,()=>{
     console.log("http://localhost:5000")

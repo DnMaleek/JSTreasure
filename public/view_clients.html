@@ -71,7 +71,7 @@
         border-radius: 2px;
         color: white;
     }
-
+    
 </style>
 
 <body>
@@ -114,20 +114,19 @@
         for (let d of data) {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${d.Id}</td>    
-                <td>${d.Name}</td>    
-                <td>${d.Email}</td>    
+                <td>${d.Id}</td>
+                <td>${d.Name}</td>
+                <td>${d.Email}</td>
                 <td>${d.Tel}</td>
                 <td style="display: flex; justify-content: center; gap: 5px; ">
                     <a href='/view_client/${d.Id}'>
                         <button style="background-color: rgb(114, 173, 198);">View</button>
                     </a>
                         <button class="deleteBtn" onclick="deleteClient(${d.Id})" style="background: #ff3232;">Delete</button>
-                </td>  
+                </td>
             `;
             tableData.appendChild(tr);
         }
-   
     }
 
     fetchData();

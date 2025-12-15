@@ -117,7 +117,7 @@
         align-items:flex-end;
     }
 
-    #cancelBtn {
+    #cancelBtn , #cancelBtn2 {
         height: 40px;
         width: 40px;
         font-size: 30px;
@@ -186,7 +186,7 @@
     </div>
     <main>
         <div class="container">
-                <h2 id="clientName">Client Name <span><i class="fa-solid fa-user-pen"></i></span></h2>
+                <h2 id="clientName">Client Name <span onclick="editClient()"><i class="fa-solid fa-user-pen"></i></span></h2>
 
             <div class="bar">
                 <button id="openPopUp"><i class="fa-solid fa-plus"></i> Add Transaction </button>
@@ -214,7 +214,7 @@
             </table>
         </div>
 
-
+<!--POP UP FOR ADD TRANSACTION --> 
         <div class="popbg" id="popbg">
 
             <div class="popcard">
@@ -241,10 +241,39 @@
 
         </div>
 
+        <!--POP UP FOR EDIT CLIENT --> 
+
+        <div class="popbg" id="editPop">
+            <div class="popcard">
+
+                  <div class="cancelBtn" >
+                    <button id="cancelBtn2">
+                       <i class="fa-regular fa-circle-xmark fa-shake"></i>
+                    </button>
+                </div>
+
+                <form class="addTransaction" id="">
+                    <h2>Add client transaction here</h2>
+                    <select id="transType">
+                        <option value="">---Select Transaction Type---</option>
+                        <option value="in">In</option>
+                        <option value="out">Out</option>
+                    </select>
+                    <input type="number" id="" placeholder="Enter Amount" max="1000000000">
+                    <input type="text" name="" id="" placeholder="Comment (optional)">
+                    <button type="submit">Add</button>
+
+                </form>
+
+
+            </div>
+        </div>
+
+
     </main>
 
     
-        <script>
+<script>
 
             const clientId = window.location.pathname.split('/').pop();
             
@@ -381,6 +410,18 @@
         
         displayBalance();
         
+//Edit client
+
+
+const editClient = () =>{
+    document.getElementById('editPop').style.display='flex';
+
+    document.getElementById('cancelBtn2').addEventListener('click',()=>{
+             document.getElementById('editPop').style.display='none'
+            })
+}
+
+
 
         </script>
 </body>

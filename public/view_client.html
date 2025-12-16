@@ -16,7 +16,7 @@
     }
 
     body {
-        background-color: rgb(231, 231, 231);
+        background-color: rgb(223, 223, 223);
     }
 
     main {
@@ -154,6 +154,11 @@
         transform: scale(1.05) translate(-3px);
     }
 
+    #balance {
+        font-weight: bold;
+        color: green;
+    }
+
     form > select, input {
         width: 100%;
         height: 40px;
@@ -166,22 +171,35 @@
         position: absolute;
         top: 40px;
         right: 40px;
-        z-index: 100;
+        z-index: 200;
         color: rgba(255, 255, 255, 0.895);
+        padding-inline: 20px;
+        padding-top: 10px;
+        font-size: 17px;
+        padding-bottom: 10px;
+        background: rgb(10, 168, 10);
+        border: 2px solid rgba(139, 255, 148, 0.76);
+        border-radius: 8px 8px 8px 0;
+        font-weight: bold;
+        display: none;
     }
 
     #msg {
-        background: rgba(38, 174, 38, 0.874);
-        padding-inline: 20px;
-        padding-top: 5px; 
-        padding-bottom: 5px; 
         font-size: 12px;
     }
 
+    .status.success {
+        background: rgb(10, 168, 10);
+        border-color: rgba(139, 255, 148, 0.76);
+    }
 
+    .status.error {
+        background: rgb(200, 40, 40);
+        border-color: rgba(255, 150, 150, 0.8);
+    }
 </style>
 <body>
-    <div class="status">
+    <div class="status" id="statusBox">
         <p id="msg">This is it</p>
     </div>
     <main>
@@ -190,7 +208,7 @@
 
             <div class="bar">
                 <button id="openPopUp"><i class="fa-solid fa-plus"></i> Add Transaction </button>
-                <p style="font-size: 17px; font-weight: bold;">Balance: <span id="balance"></span></p>
+                <h3 style="font-weight: bold;">Balance: <span id="balance"></span></h3>
 
             </div>
 
@@ -350,9 +368,23 @@
 
             // Collect values
             const type = document.getElementById('transType').value;
-            const amount = document.getElementById('amount').value;
+            const amount = Number(document.getElementById('amount').value);
             const desc = document.getElementById('description').value;
+            const msg = document.getElementById('msg');
+            const statusBox = document.getElementById('statusBox');
 
+             // 🛑 Validation
+            if (!type || amount <= 0) {
+                popBg.style.display = 'none';
+                msg.innerText = "Please enter a valid transaction";
+                statusBox.className = "status error";
+                statusBox.style.display = "block";
+
+                setTimeout(() => {
+                    statusBox.style.display = "none";
+                }, 3000);
+                return;
+            }
             // Creating data object
             const data = {
                 clientId, // This already exists (---Global Variable---)
@@ -372,21 +404,31 @@
                 });
 
                 if (response.ok) {
-                    // Waiting for response from the server
                     const res = await response.json();
-                    console.log(res);
 
-                    // ✅ Reset the form
+                    msg.innerText = res.message;
+
+                    statusBox.style.display = "block";
+                    statusBox.className = "status success"
+
+                    setTimeout(() => {
+                        statusBox.style.display = "none";
+                    }, 3000);
+
                     transForm.reset();
+                    popBg.style.display = 'none';
 
-                    // ✅ Reload transactions and balance after successful addition
                     await loadTransaction();
                     await displayBalance();
                 } else {
+                    popBg.style.display = 'none';
+                    statusBox.className = "status success"
                     console.error('Server responded with an error!');
                 }
             } catch (error) {
-                console.error('Error submitting transaction:', error);
+                console.error("Error submitting transaction:", error);
+                msg.innerText = "Server error. Try again.";
+                msg.style.display = "block";
             }
         });
 
@@ -424,7 +466,9 @@
                         <td>${trans.in}</td>
                         <td style="color: red">${trans.out}</td>
                         <td>${trans.description}</td>
-                        <td>Actions</td>
+                        <td>
+                            <delete style="background: rgba(200, 50, 50); color: white; cursor: pointer; padding:6px; border-radius: 8px; border:2px solid white;" onclick="deleteTransaction(${trans.id})" >Delete</delete>
+                        </td>
                     `;
                     tableData.appendChild(trElement);
                 });
@@ -441,17 +485,54 @@
 
             try {
                 const data = await res.json()
-                balance.innerText = data.balance;
+                balance.innerText = `TZS ${data.balance.toLocaleString()}`;
+
+
+               if (data.balance < 0) {
+                    balance.style.color = 'red';
+                } else if (Number(data.balance) === 0) {
+                    balance.style.color = 'blue';
+                } else {
+                    balance.style.color = 'green';
+                }
             }catch(error) {
                 console.log(error)
             }
-        }    
-        
+        }
+
+        const deleteTransaction = async (trans_id) => {
+                try {
+                    const res = await fetch(`/transaction/delete/${trans_id}`, {
+                        method: 'DELETE'
+                    });
+
+                    const data = await res.json();
+
+                    msg.innerText = data.message;
+
+                    statusBox.style.display = "block";
+                    setTimeout(() => {
+                        statusBox.style.display = "none";
+                    }, 3000);
+
+                    await loadTransaction();
+                    await displayBalance();
+
+                    if (!res.ok) {
+                        console.error(data);
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    msg.innerText = "Something went wrong";
+                    statusBox.style.display = "block";
+                }
+            };
+
         displayBalance();
-        
+
+
 //Edit client
-
-
 const editClient = () =>{
     document.getElementById('editPop').style.display='flex';
 

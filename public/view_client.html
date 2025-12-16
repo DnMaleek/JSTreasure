@@ -8,201 +8,334 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
-
 <style>
-    * {
-        font-family:sans-serif;
-        margin: 0;
+* {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #e9edf2, #dfe6ec);
+    color: #1f2933;
+}
+
+main {
+    display: flex;
+    margin-top: 20px;
+}
+.main-container {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 70%;
+    min-width: 1080px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px 25px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    margin-bottom: 15px;
+    background: #f7faff;
+    border-radius: 12px;
+    border: 1px solid #e3e9f0;
+}
+
+.bar button {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #1b6ca8, #0f4c75);
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(27,108,168,0.35);
+    transition: all 0.3s ease;
+}
+
+.bar button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(27,108,168,0.45);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 14.5px;
+}
+
+thead {
+    background: linear-gradient(135deg, #1b6ca8, #0f4c75);
+    color: #fff;
+}
+
+thead th {
+    padding: 14px;
+    text-align: left;
+}
+
+tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+tbody tr {
+    transition: background 0.25s;
+}
+
+tbody tr:hover {
+    background: #f1f7ff;
+}
+
+tr button {
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+tr button:hover {
+    opacity: 0.85;
+    transform: scale(1.05);
+}
+
+.popbg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px);
+    z-index: 100;
+}
+
+.popcard {
+    background: #ffffff;
+    padding: 30px 25px;
+    border-radius: 14px;
+    width: 420px;
+    animation: pop 0.4s ease;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+@keyframes pop {
+    from {
+        transform: scale(0.85);
+        opacity: 0;
     }
-
-    body {
-        background-color: rgb(223, 223, 223);
+    to {
+        transform: scale(1);
+        opacity: 1;
     }
+}
 
-    main {
-      
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
+.cancelBtn {
+    display: flex;
+    justify-content: flex-end;
+}
 
+#cancelBtn, #cancelBtn2 {
+    height: 38px;
+    width: 38px;
+    font-size: 26px;
+    border: none;
+    background: transparent;
+    color: #dc2626;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#cancelBtn:hover,
+#cancelBtn2:hover {
+    transform: rotate(90deg) scale(1.1);
+}
+
+.addTransaction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.addTransaction h2 {
+    color: #1b6ca8;
+    margin-bottom: 10px;
+}
+
+.addTransaction button {
+    width: 45%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.addTransaction button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(22,163,74,0.4);
+}
+
+form select,
+form input {
+    width: 100%;
+    height: 42px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.status {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    z-index: 200;
+    padding: 12px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    display: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(40px);
+        opacity: 0;
     }
-
-    .container {
-        width: 80%;
-        
+    to {
+        transform: translateX(0);
+        opacity: 1;
     }
+}
 
-    h2 {
-        text-align: center;
-        margin-bottom: 10px;
-    }
+.status.success {
+    background: #16a34a;
+    border-left: 5px solid #22c55e;
+    color: #ecfdf5;
+}
+
+.status.error {
+    background: #dc2626;
+    border-left: 5px solid #f87171;
+    color: #fef2f2;
+}
+
+#msg {
+    font-size: 13px;
+}
+
+aside {
+    background: linear-gradient(180deg, #0f4c75, #1b6ca8);
+    height: calc(100vh - 20px);
+    width: 360px;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.18);
+    position: sticky;
+    top: 0;
+}
 
 
+aside h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
 
-    .bar {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px;
-    }
+aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
-    .bar button {
-        padding: 10px 15px;
-        border-radius: 8px;
-        border: 0px solid rgb(231, 231, 231);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        transition: all 0.3s;
+aside li {
+    margin: 8px 10px;
+}
 
-    }
+aside a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: #eaf4ff;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
 
-    .bar button:hover {
-        border: 1px solid white;
-        transform: scale(1.1);
-    }
+aside a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(5px);
+}
 
-       table, thead, th, td{
-        border: 1px solid rgb(148, 148, 148);
-        border-collapse: collapse;
-        padding: 10px;
-    }
-    thead{
-        background-color: rgb(114, 173, 198);
+aside a.active {
+    background: #ffffff;
+    color: #1b6ca8;
+    font-weight: bold;
+}
 
-    }
-    tr:hover {
-        background-color: rgb(114, 173, 198);
-    }
-    tr button {
-        padding: 2px 10px;
-        border: none;
-        border-radius: 2px;
-        color: white;
-    }
+.sidebar-footer {
+    margin-top: auto;
+    padding: 15px;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+}
 
-    .popbg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height:100%;
-        background: rgba(0,0,0,0.5);
-        display: none;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .popcard {
-        background-color: rgb(231, 231, 231);
-        padding: 30px 20px;
-        border-radius: 8px;
-        width: 400px;
-        text-align: center;
-        animation: pop 3s ease;
-    }
-
-    @keyframes pop {
-        form {
-            transform: scale(0.8);
-            opacity: 0;
-        }
-        
-        to{
-            transform:scale(1) ;
-            opacity: 1;
-        }
-    }
-
-    .cancelBtn {
-        display: flex;
-        flex-direction: column;
-        align-items:flex-end;
-    }
-
-    #cancelBtn , #cancelBtn2 {
-        height: 40px;
-        width: 40px;
-        font-size: 30px;
-        padding: 0;
-        border: none;
-        color: red;
-        background-color: rgb(231, 231, 231);
-
-    }
-
-    .addTransaction {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        gap: 10px;
-
-    }
-    .addTransaction > h2 {
-        color: rgb(114, 173, 198);
-        margin-bottom: 20px;
-    }
-
-    .addTransaction > button {
-        width: 40%;
-        padding: 8px 20px;
-        border:2px solid white;
-        border-radius: 8px;
-        transition: all .3s ease;
-    }
-
-    .addTransaction > button:hover{
-        transform: scale(1.05) translate(-3px);
-    }
-
-    #balance {
-        font-weight: bold;
-        color: green;
-    }
-
-    form > select, input {
-        width: 100%;
-        height: 40px;
-        text-align: center;
-        outline: none;
-        border: none;
-        
-    }
-    .status {
-        position: absolute;
-        top: 40px;
-        right: 40px;
-        z-index: 200;
-        color: rgba(255, 255, 255, 0.895);
-        padding-inline: 20px;
-        padding-top: 10px;
-        font-size: 17px;
-        padding-bottom: 10px;
-        background: rgb(10, 168, 10);
-        border: 2px solid rgba(139, 255, 148, 0.76);
-        border-radius: 8px 8px 8px 0;
-        font-weight: bold;
-        display: none;
-    }
-
-    #msg {
-        font-size: 12px;
-    }
-
-    .status.success {
-        background: rgb(10, 168, 10);
-        border-color: rgba(139, 255, 148, 0.76);
-    }
-
-    .status.error {
-        background: rgb(200, 40, 40);
-        border-color: rgba(255, 150, 150, 0.8);
-    }
 </style>
 <body>
     <div class="status" id="statusBox">
         <p id="msg">This is it</p>
     </div>
     <main>
+        <div class="main-container">
+        <aside>
+            <h2>Treasure MS</h2>
+            <ul>
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/add">New Client</a></li>
+                <li><a href="/view_clients">Manage Clients</a></li>
+                <li><a href="">Analysis</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                &copy; 2025 Treasure MS
+            </div>
+        </aside>
+
         <div class="container">
                 <h2 id="clientName">Client Name <span onclick="editClient()"><i class="fa-solid fa-user-pen"></i></span></h2>
 
@@ -230,6 +363,7 @@
                     
                 </tbody>
             </table>
+        </div>
         </div>
 
 <!--POP UP FOR ADD TRANSACTION --> 
@@ -310,9 +444,6 @@
                 nameEdt.value=client.Name;
                 emailEdt.value=client.Email;
                 phoneEdt.value=client.Tel;
-
-              
-
             }
     
             loadClient();
@@ -337,14 +468,22 @@
                     })
                 })
 
-
                 if(res.ok) {
                     const data = await res.json();
                     await loadClient();
+                    msg.innerText = data.message;
+
+                    statusBox.style.display = "block";
+                    statusBox.className = "status success"
+                    setTimeout(() => {
+                        statusBox.style.display = "none";
+                    }, 3000);
                     document.getElementById('editPop').style.display='none';
-
+                }else {
+                    msg.innerText = data.message;
+                    statusBox.style.display = "block";
+                    statusBox.className = "status error"
                 }
-
                 }) 
             
             const popBtn =document.getElementById('openPopUp');

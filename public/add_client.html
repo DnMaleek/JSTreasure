@@ -1,151 +1,261 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add_Client |Treasure </title>
+    <title>Add_Client | Treasure</title>
+    <style>
+        * {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2f6, #e3e9ef);
+        }
+
+        main {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        aside {
+            background: linear-gradient(180deg, #0f4c75, #1b6ca8);
+            height: calc(100vh - 20px);
+            width: 360px;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.18);
+            position: sticky;
+            top: 0;
+        }
+
+        aside h2 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            font-size: 22px;
+        }
+
+        aside ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        aside li {
+            margin: 6px 12px;
+        }
+
+        aside a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: #eaf4ff;
+            text-decoration: none;
+            font-size: 15.5px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        aside a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(6px);
+        }
+
+        aside a.active {
+            background: #ffffff;
+            color: #1b6ca8;
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 15px;
+            text-align: center;
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        form {
+            border: 1px solid rgb(209, 209, 209);
+            box-shadow: 1px 5px 15px rgba(167, 167, 167, 0.4);
+            display: flex;
+            flex-direction: column;
+            padding: 50px;
+            gap: 15px;
+            width: 600px;
+            border-radius: 15px;
+            transition: all .3s;
+            background-color: #ffffff;
+            position: relative;
+        }
+
+        form:hover {
+            transform: scale(1.01);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: rgba(4, 101, 4, 0.85);
+            text-align: center;
+        }
+
+        .d1 {
+            background-color: green;
+            padding-left: 8px;
+            width: 100%;
+            height: 40px;
+            margin-bottom: 8px;
+        }
+
+        .d2 {
+            background-color: rgb(231, 231, 231);
+            height: 42px;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            border-bottom-left-radius: 50px;
+            border-top-right-radius: 50px;
+            position: absolute;
+            z-index: 1;
+        }
+
+        input {
+             width: 100%;
+             height: 40px;
+            font-size: 17px; 
+             padding-inline:10px ;
+             outline: none;
+             border: none;
+             background-color: rgb(231, 231, 231);
+             border-bottom: 1px solid gray;
+              margin-bottom: 10px;
+             }
+
+        .btn {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        button {
+            width: 50%;
+            height: 50px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            color: gainsboro;
+            background-color: rgb(8, 68, 99);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(8, 68, 99, 0.3);
+        }
+
+        #msg {
+            font-size: 16px;
+            color: green;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        @media(max-width: 900px) {
+            main {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                box-shadow: none;
+            }
+
+            .container {
+                width: 100%;
+                padding: 0 20px;
+            }
+
+            form {
+                width: 100%;
+                padding: 30px;
+            }
+        }
+    </style>
 </head>
-<style>
-    * {
-        font-family:sans-serif;
-        margin: 0;
-    }
-    body {
-        background-color: rgb(231, 231, 231);
-    }
-    main {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        flex-direction: column;
-        gap:4px;
-    }
-
-    form {
-        border: 1px solid rgb(209, 209, 209);
-        box-shadow: 1px 5px 10px rgb(167, 167, 167);
-        display: flex;
-        flex-direction: column;
-        padding: 50px;
-        gap: 5px;
-        width: 600px;
-        border-radius: 15px;
-        transition: all .3s;
-        align-items: center;
-    }
-
-    h2{
-        margin-bottom: 10px;
-        color: rgba(4, 101, 4, 0.852);
-    }
-
-    .d1 {
-        background-color:green ;
-        padding-left: 8px;
-        width: 100%;
-        height: 40px;
-        margin-bottom: 8px;
-    }
-
-    .d2 {
-        background-color: rgb(231, 231, 231);
-        height: 42px;
-        padding: 0 15px;
-        display: flex;
-        align-items: center;
-        border-bottom-left-radius: 50px;
-        border-top-right-radius: 50px;
-        position: absolute;
-        z-index: 1;
-    }
-
-    form:hover {
-        transform: scale(1.01);
-
-    }
-
-    input {
-        width: 100%;
-        height: 40px;
-        font-size: 17px;
-        padding-inline:10px ;
-        outline: none;
-        border: none;
-        background-color: rgb(231, 231, 231);
-        border-bottom: 1px solid gray;
-        margin-bottom: 10px;
-    }
-    
-    .btn{
-        width: 100%;
-    }
-
-    button{
-        width: 50%;
-        float: right;
-        height: 50px;
-        font-size: 20px;
-        border: none;
-        border-radius: 5px;
-        color: gainsboro;
-        background-color: rgb(8, 68, 99);
-    }
-
-</style>
-
 <body>
     <main>
-             
-
-        <form id="formData">
-            <h2>Add Client</h2>
-            <div class="d1">
-                <div class="d2">
-                    <p>Add details of your client here</p>
-                </div>
-            </div> 
-            <input type="text" name="Name" id="Name" placeholder="Name">
-            <input type="email" name="Email" id="Email" placeholder="Email">
-            <input type="text" name="Tel" id="Tel" placeholder="Phone">
-
-            <div class="btn">
-            <button type="submit">Add</button>
+        <!-- Sidebar -->
+        <aside>
+            <h2>Treasure MS</h2>
+            <ul>
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/add">New Client</a></li>
+                <li><a href="/view_clients">Manage Clients</a></li>
+                <li><a href="">Analysis</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                &copy; 2025 Treasure MS
             </div>
+        </aside>
 
-               <p id="msg" style="color: green; font-size: 18px;"></p>
-        </form>
+        <!-- Main Form Container -->
+        <div class="container">
+            <form id="formData">
+                <h2>Add Client</h2>
+                <div class="d1">
+                    <div class="d2">
+                        <p>Add details of your client here</p>
+                    </div>
+                </div> 
+                <input type="text" name="Name" id="Name" placeholder="Name">
+                <input type="email" name="Email" id="Email" placeholder="Email">
+                <input type="text" name="Tel" id="Tel" placeholder="Phone">
+
+                <div class="btn">
+                    <button type="submit">Add</button>
+                </div>
+
+                <p id="msg"></p>
+            </form>
+        </div>
     </main>
 
     <script>
         document.getElementById('formData').addEventListener('submit', async(e)=>{
             e.preventDefault();
 
-            const name=document.getElementById('Name').value.trim()
-            const email=document.getElementById('Email').value.trim()
-            const tel=document.getElementById('Tel').value.trim()
-            const msg=document.getElementById('msg')
+            const name=document.getElementById('Name').value.trim();
+            const email=document.getElementById('Email').value.trim();
+            const tel=document.getElementById('Tel').value.trim();
+            const msg=document.getElementById('msg');
 
             const res = await fetch('/add', {
                 method: "POST",
-                headers: {
-                    "Content-Type":"application/json"
-                }  
-                ,
+                headers: { "Content-Type":"application/json" },
+                body: JSON.stringify({ Name:name, Email:email, Tel:tel })
+            });
 
-                body:JSON.stringify({
-                    Name:name,
-                    Email:email,
-                    Tel:tel
-                })
-            })
-            
             const data = await res.json();
-            console.log(data.message);
             msg.innerText = data.message;
-        }) 
+        });
     </script>
-
 </body>
 </html>

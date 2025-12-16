@@ -4,6 +4,7 @@ const path = require ('path')
 const cors =require ('cors')
 const bodyParser=require ('body-parser')
 const dotenv= require ('dotenv')
+const { error } = require('console')
 
 //initialize express
 const app = express()
@@ -110,11 +111,11 @@ app.get('/view_client/:client_id', (req, res) => {
 //fetch user by id
 
 app.post('/view_client/:client_id', (req,res) => {
-    const id = req.params.client_id;
+    const Id = req.params.client_id;
 
-    const sql = "SELECT * FROM clients WHERE id=?"
+    const sql = "SELECT * FROM clients WHERE Id=?"
 
-    db.query(sql, [id], (error, result) => {
+    db.query(sql, [Id], (error, result) => {
         if (error) throw error;
 
         if (result.length===0) {
@@ -125,6 +126,28 @@ app.post('/view_client/:client_id', (req,res) => {
         const client = result[0]
         res.json(client)
 
+    })
+
+})
+
+//Edit client data
+
+app.put('/view_client/:client_id' , (req ,res) => {
+    const Id = req.params.client_id;
+
+    const {Name ,Email ,Tel} =req.body;
+
+      if (!Name || !Email || !Tel) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const sql ="UPDATE clients SET Name=? , Email=? , Tel=? WHERE Id =?"
+
+    db.query(sql,[Name ,Email ,Tel ,Id],(error) => {
+        if (error) {
+            return res.status(500).json({ message: "Database Error", error });
+        }
+        res.json({ message: "Client edited Successfully!" });
     })
 
 })

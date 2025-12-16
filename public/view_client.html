@@ -252,16 +252,13 @@
                     </button>
                 </div>
 
-                <form class="addTransaction" id="">
+                <form class="addTransaction" id="editUser">
+
                     <h2>Add client transaction here</h2>
-                    <select id="transType">
-                        <option value="">---Select Transaction Type---</option>
-                        <option value="in">In</option>
-                        <option value="out">Out</option>
-                    </select>
-                    <input type="number" id="" placeholder="Enter Amount" max="1000000000">
-                    <input type="text" name="" id="" placeholder="Comment (optional)">
-                    <button type="submit">Add</button>
+                    <input type="text" id="nameEdt" placeholder="Name">
+                    <input type="emai" id="emailEdt" placeholder="Email">
+                    <input type="text" id="phoneEdt" placeholder="Phone">
+                    <button type="submit">Save</button>
 
                 </form>
 
@@ -278,18 +275,60 @@
             const clientId = window.location.pathname.split('/').pop();
             
             async function loadClient() {
+
+                const nameEdt=document.getElementById('nameEdt')
+                const emailEdt=document.getElementById('emailEdt')
+                const phoneEdt=document.getElementById('phoneEdt')
+
                 const responce = await fetch(`/view_client/${clientId}` , {
                     method:"POST" ,
-                    headers: {'Content-Type': 'application/json'}
+                    headers: {'Content-Type': 'application/json'} ,
                 });
                 
                 const client = await responce.json();
 
-                document.getElementById('clientName').innerHTML=client.Name + ' <span><i class="fa-solid fa-user-pen"></i></span>';
-            }
+                document.getElementById('clientName').innerHTML=client.Name + ' <span onclick="editClient()"><i class="fa-solid fa-user-pen"></i></span>';
 
+                nameEdt.value=client.Name;
+                emailEdt.value=client.Email;
+                phoneEdt.value=client.Tel;
+
+              
+
+            }
+    
             loadClient();
-          
+         
+            document.getElementById('editUser').addEventListener('submit', async(e)=>{
+                    e.preventDefault();
+
+                const nameEdt=document.getElementById('nameEdt').value.trim();
+                const emailEdt=document.getElementById('emailEdt').value.trim();
+                const phoneEdt=document.getElementById('phoneEdt').value.trim();
+
+                const res= await fetch(`/view_client/${clientId}`,{
+                    method:"PUT" ,
+                    headers:{
+                    "Content-Type":"application/json"
+                } ,
+
+                    body:JSON.stringify({
+                    Name:nameEdt,
+                    Email:emailEdt,
+                    Tel:phoneEdt,
+                    })
+                })
+
+
+                if(res.ok) {
+                    const data = await res.json();
+                    await loadClient();
+                    document.getElementById('editPop').style.display='none';
+
+                }
+
+                }) 
+            
             const popBtn =document.getElementById('openPopUp');
             const popBg =document.getElementById('popbg');
             const cancelBtn =document.getElementById('cancelBtn');

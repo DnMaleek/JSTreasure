@@ -61,7 +61,7 @@ h2 {
 }
 
 .bar button {
-    padding: 10px 18px;
+    padding: 6px 12px;
     border-radius: 10px;
     border: none;
     background: linear-gradient(135deg, #1b6ca8, #0f4c75);
@@ -69,6 +69,7 @@ h2 {
     font-weight: 500;
     cursor: pointer;
     box-shadow: 0 6px 15px rgba(27,108,168,0.35);
+    font-size: 12px;
     transition: all 0.3s ease;
 }
 
@@ -82,7 +83,7 @@ table {
     border-collapse: collapse;
     border-radius: 10px;
     overflow: hidden;
-    font-size: 14.5px;
+    font-size: 12.5px;
 }
 
 thead {
@@ -91,7 +92,7 @@ thead {
 }
 
 thead th {
-    padding: 14px;
+    padding: 12px;
     text-align: left;
 }
 
@@ -192,7 +193,7 @@ tr button:hover {
     padding: 10px;
     border-radius: 10px;
     border: none;
-    background: linear-gradient(135deg, #16a34a, #15803d);
+    background: linear-gradient(135deg, #1b6ca8, #08497b);
     color: white;
     font-weight: 500;
     cursor: pointer;
@@ -240,7 +241,7 @@ form input {
 }
 
 .status.success {
-    background: #16a34a;
+    background: #1b6ca8;
     border-left: 5px solid #22c55e;
     color: #ecfdf5;
 }
@@ -273,6 +274,7 @@ aside h2 {
     text-align: center;
     margin-bottom: 30px;
     letter-spacing: 1px;
+    font-size: 22px;
 }
 
 aside ul {
@@ -316,6 +318,22 @@ aside a.active {
     color: rgba(255,255,255,0.7);
 }
 
+.simple_info {
+    font-style: italic;
+    font-weight: 500;
+    color: gray;
+    font-size: 12px;
+    opacity: .6;
+}
+
+#clientName{
+    font-size: 17px;
+    font-weight: bold;
+    color: #1b6ca8;
+}
+#bala{
+    font-size: 14px;
+}
 </style>
 <body>
     <div class="status" id="statusBox">
@@ -338,10 +356,12 @@ aside a.active {
 
         <div class="container">
                 <h2 id="clientName">Client Name <span onclick="editClient()"><i class="fa-solid fa-user-pen"></i></span></h2>
-
+            <div>
+            </div>
             <div class="bar">
                 <button id="openPopUp"><i class="fa-solid fa-plus"></i> Add Transaction </button>
-                <h3 style="font-weight: bold;">Balance: <span id="balance"></span></h3>
+                <p class="simple_info" >Manage <span id="clientName1"></span>'s transactions here! </p>
+                <h3 id="bala" style="font-weight: bold;">Balance: <span id="balance"></span>/=</h3>
 
             </div>
 
@@ -440,6 +460,7 @@ aside a.active {
                 const client = await responce.json();
 
                 document.getElementById('clientName').innerHTML=client.Name + ' <span onclick="editClient()"><i class="fa-solid fa-user-pen"></i></span>';
+                document.getElementById('clientName1').innerHTML=client.Name;
 
                 nameEdt.value=client.Name;
                 emailEdt.value=client.Email;
@@ -624,7 +645,10 @@ aside a.active {
 
             try {
                 const data = await res.json()
-                balance.innerText = `TZS ${data.balance.toLocaleString()}`;
+                balance.innerText = new Intl.NumberFormat('en-TZ', {
+                    style: 'currency',
+                    currency: 'TZS'
+                }).format(data.balance);
 
 
                if (data.balance < 0) {

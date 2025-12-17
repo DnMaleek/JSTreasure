@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>View Clients | Treasure</title>
 </head>
 
@@ -43,16 +44,18 @@ main {
 }
 
 .heading { 
-    margin-top: 10px;
+    margin-top: 8px;
     margin-bottom: 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid rgb(218, 218, 218);
 }
 
-.heading h2 {
-    font-weight: 600;
+.heading .head h2 {
+    font-weight: bold;
     letter-spacing: 0.5px;
+    font-size: 17px;
     color: #1f2933;
 }
 
@@ -62,6 +65,7 @@ main {
     height: 42px;
     border-radius: 25px;
     padding: 2px;
+    font-size:12px;
 }
 
 .search input {
@@ -79,7 +83,7 @@ table {
     border-collapse: collapse;
     border-radius: 10px;
     overflow: hidden;
-    font-size: 14.5px;
+    font-size: 12.5px;
 }
 
 thead {
@@ -88,7 +92,7 @@ thead {
 }
 
 thead th {
-    padding: 14px;
+    padding: 12px;
     text-align: left;
 }
 
@@ -181,6 +185,18 @@ aside a.active {
     color: rgba(255,255,255,0.7);
 }
 
+.head {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    align-items: center;
+}
+
+.head i {
+    color: #1b6ca8;
+    font-size: 14px; 
+    text-align: center;
+}
 
 </style>
 
@@ -200,11 +216,13 @@ aside a.active {
         </aside>
    <div class="container">
     <div class="heading">
-        <h2 style="color: #1b6ca8;">Manage Clients</h2>
+        <div class="head">
+            <h2 style="color: #1b6ca8;">Manage Clients</h2>
+            <i class="fa-solid fa-circle-plus"></i>
+        </div>
         <div class="search">
             <input type="text" name="" id="" placeholder="Search clients here....">
         </div>
-
     </div>
      
     <table>

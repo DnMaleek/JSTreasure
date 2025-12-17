@@ -81,26 +81,39 @@
             font-size: 13px;
             color: rgba(255,255,255,0.7);
         }
+        .main-container {
+            display: flex;
+            gap: 2%;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;              /* center horizontally */
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+
+            align-items: center;         /* vertical centering */
+            justify-content: center;
+        }
 
         .container {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
         }
+
 
         form {
             border: 1px solid rgb(209, 209, 209);
-            box-shadow: 1px 5px 15px rgba(167, 167, 167, 0.4);
+            box-shadow: 1px 5px 15px rgba(167, 167, 167);
             display: flex;
             flex-direction: column;
-            padding: 50px;
+            padding: 50px;  
             gap: 15px;
-            width: 600px;
+            width: 400px;
             border-radius: 15px;
             transition: all .3s;
-            background-color: #ffffff;
-            position: relative;
         }
 
         form:hover {
@@ -109,38 +122,48 @@
 
         h2 {
             margin-bottom: 10px;
-            color: rgba(4, 101, 4, 0.85);
+            color:#1b6ca8;
             text-align: center;
         }
 
         .d1 {
             background-color: green;
-            padding-left: 8px;
             width: 100%;
             height: 40px;
             margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
+            border-bottom-left-radius: 50px;
+            border-top-right-radius: 50px;
         }
 
         .d2 {
-            background-color: rgb(231, 231, 231);
-            height: 42px;
+            background-color: hsl(205, 21%, 89%);
+            height: 40px;
             padding: 0 15px;
             display: flex;
             align-items: center;
-            border-bottom-left-radius: 50px;
-            border-top-right-radius: 50px;
+            border-bottom-left-radius: 60px;
+            border-top-right-radius: 60px;
             position: absolute;
             z-index: 1;
+        }
+        .d2 p {
+            font-size: 14px;
+            font-weight: 800;
+            color: #1b6ca8;
+            opacity: .6;
+            font-style: italic;
         }
 
         input {
              width: 100%;
              height: 40px;
-            font-size: 17px; 
+            font-size: 15px; 
              padding-inline:10px ;
              outline: none;
              border: none;
-             background-color: rgb(231, 231, 231);
+             background-color: white;
              border-bottom: 1px solid gray;
               margin-bottom: 10px;
              }
@@ -152,13 +175,14 @@
         }
 
         button {
-            width: 50%;
-            height: 50px;
-            font-size: 20px;
+            width: 28%;
+            padding: 5px 12px;
+            height: 40px;
+            font-size: 14px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             color: gainsboro;
-            background-color: rgb(8, 68, 99);
+            background-color: rgb(17, 90, 126);
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -176,28 +200,69 @@
         }
 
         @media(max-width: 900px) {
-            main {
+            .main-container {
                 flex-direction: column;
-                align-items: center;
+                gap: 20px;
             }
 
-            aside {
-                width: 100%;
-                height: auto;
-                position: relative;
-                box-shadow: none;
-            }
-
+            .informations,
             .container {
                 width: 100%;
-                padding: 0 20px;
             }
 
             form {
                 width: 100%;
-                padding: 30px;
             }
         }
+
+        .informations {
+            background: #f8fafc;
+            border-left: 5px solid #1b6ca8;
+            padding: 25px 30px;
+            border-radius: 12px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .informations p {
+            font-size: 15.5px;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .informations ol {
+            padding-left: 20px;
+        }
+
+        .informations ol > li {
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .informations ul {
+            margin-top: 8px;
+            padding-left: 20px;
+        }
+
+        .informations ul li {
+            list-style-type: disc;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        /* Highlight format examples */
+        .informations ul li::marker {
+            color: #1b6ca8;
+        }
+
+        /* Optional emphasis */
+        .informations ol > li strong {
+            color: #1b6ca8;
+        }
+
+
     </style>
 </head>
 <body>
@@ -217,6 +282,7 @@
         </aside>
 
         <!-- Main Form Container -->
+        <div class="main-container">
         <div class="container">
             <form id="formData">
                 <h2>Add Client</h2>
@@ -236,6 +302,21 @@
                 <p id="msg"></p>
             </form>
         </div>
+        <div class="informations">
+                <h3>Simple Informations</h3>
+                <p>Take these informations into actions for no disturbance letter.</p>
+                <ol>
+                    <li>Add Client valid details for sequrity purpose.</li>
+                    <li>Make sure that you add all deails in proper format.
+                        <ul>
+                            <li>Phone Number +255 xxx xxx xxx</li>
+                            <li>Email email@example.com</li>
+                            <li>Name that does not contain special characters or numbers.</li>
+                        </ul>
+                    </li>
+                    <li>For any problems in Informations, make sure to contact Client immediately.</li>
+                </ol>
+            </div>
     </main>
 
     <script>

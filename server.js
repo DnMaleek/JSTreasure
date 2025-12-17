@@ -51,20 +51,19 @@ app.get('/view_clients', (req,res) =>{
 
 // get the page data
 app.get('/view_clients_data', (req, res) => {
-    
-    const sql = "SELECT * FROM clients"
+    const sql = "SELECT * FROM clients ORDER BY Id DESC"
 
     db.query(sql,(err,result)=>{
         if (err) throw err;
 
         if (result.length >= 0) {
             return res.json(result);
-        }  
+        }
 
     })
-}) 
+})
 
-//Add user 
+//Add Client
 app.post('/add', (req,res) =>{
    const {Name, Email , Tel} = req.body;
 
@@ -108,7 +107,7 @@ app.get('/view_client/:client_id', (req, res) => {
     
 })
 
-//fetch user by id
+//fetch Client by id
 
 app.post('/view_client/:client_id', (req,res) => {
     const Id = req.params.client_id;

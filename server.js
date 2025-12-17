@@ -51,10 +51,7 @@ app.get('/view_clients', (req,res) =>{
 
 // get the page data
 app.get('/view_clients_data', (req, res) => {
-<<<<<<< HEAD
-    
-=======
->>>>>>> a08ea3c41556d8814e3c90db39a0da8b44f3ddcd
+
     const sql = "SELECT * FROM clients ORDER BY Id DESC"
 
     db.query(sql,(err,result)=>{

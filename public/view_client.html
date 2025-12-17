@@ -81,7 +81,8 @@ h2 {
 table {
     width: 100%;
     border-collapse: collapse;
-    border-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     overflow: hidden;
     font-size: 12.5px;
 }
@@ -334,6 +335,123 @@ aside a.active {
 #bala{
     font-size: 14px;
 }
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+      #printArea table {
+        width: 100%;  
+        font-size: 14pt;      
+    }
+
+    #printArea table th,
+    #printArea table td {
+        padding: 8px; 
+        font-size: 14pt;   
+    }
+    
+    #printArea, #printArea * {
+        visibility: visible;
+    }
+
+    #printDetails {
+        display: flex !important;
+    }
+
+    #printArea {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    button, select, #tbNotPrinted, #thNotPrinted {
+        display: none !important;
+    }
+}
+
+#balance1 {
+    color: green;
+}
+
+/*  Pegination styling */
+/* Table Styling */
+#printArea table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+#printArea th, 
+#printArea td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+#printArea th {
+    background-color: #0077b6;
+    color: white;
+}
+
+#printArea tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Pagination Footer Styling */
+.peginaitionFooter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-top: 20px;
+    gap: 10px;
+    font-family: Arial, sans-serif;
+}
+
+.peginaitionFooter button {
+    padding: 8px 14px;
+    background-color: #0077b6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.peginaitionFooter button:hover {
+    background-color: #005f86;
+}
+
+.peginaitionFooter select {
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+/* Align select and print button nicely */
+.peginaitionFooter div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+@media (max-width: 600px) {
+    .peginaitionFooter {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+}
+
+
 </style>
 <body>
     <div class="status" id="statusBox">
@@ -362,7 +480,16 @@ aside a.active {
                 <button id="openPopUp"><i class="fa-solid fa-plus"></i> Add Transaction </button>
                 <p class="simple_info" >Manage <span id="clientName1"></span>'s transactions here! </p>
                 <h3 id="bala" style="font-weight: bold;">Balance: <span id="balance"></span>/=</h3>
+            </div>
 
+            <div id="printArea">
+
+                <!-- Only on Printing the transactions-->
+            <div class="bar" style="display: none;" id="printDetails">
+                <h3 style="color:#08497b;" id="clientName2"></h3>
+                <p class="simple_info" >Traesure Management System</p>
+                <h3 id="bala" style="font-weight: bold;">Balance: <span id="balance1"></span>/=</h3>
+                
             </div>
 
             <table style="width: 100%;">
@@ -374,7 +501,7 @@ aside a.active {
                         <th>In</th>
                         <th>Out</th>
                         <th>Desc</th>
-                        <th>Action</th>
+                        <th id="thNotPrinted">Action</th>
 
                     </tr>
                 </thead>
@@ -383,6 +510,31 @@ aside a.active {
                     
                 </tbody>
             </table>
+            </div>
+
+
+            <!--Pagination Controls-->
+            <div class="peginaitionFooter">
+                <div style="margin-top:10px;">
+                <button onclick="prevPage()"><i class="fa-solid fa-angle-left"></i></button>
+                <span id="pageInfo"></span>
+                <button onclick="nextPage()"><i class="fa-solid fa-angle-right"></i></button>
+            </div>
+
+            <div>
+                <select name="" id="maxEntries">
+                    <option value="">Entries/Page</option>
+                    <option value="10">10 Entries</option>
+                    <option value="15">15 Entires</option>
+                    <option value="20">20 Entries</option>
+                </select>
+            </div>
+
+            <div>
+                <button onclick="printTrans()">Print</button>
+            </div>
+            </div>
+
         </div>
         </div>
 
@@ -460,7 +612,8 @@ aside a.active {
                 const client = await responce.json();
 
                 document.getElementById('clientName').innerHTML=client.Name + ' <span onclick="editClient()"><i class="fa-solid fa-user-pen"></i></span>';
-                document.getElementById('clientName1').innerHTML=client.Name;
+                document.getElementById('clientName1').innerHTML = client.Name;
+                document.getElementById('clientName2').innerText = client.Name;
 
                 nameEdt.value=client.Name;
                 emailEdt.value=client.Email;
@@ -591,56 +744,100 @@ aside a.active {
                 msg.style.display = "block";
             }
         });
+  
+        //LOAD TRANSACTIONS
 
-        const loadTransaction = async () => {
-            const res = await fetch("/transactions", {
-                method:"POST",
-                headers: {
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({clientId})
-            });
+      let limit = 10;
+      let currentPage = 1;
+      
+           document.getElementById("maxEntries").addEventListener("change", (e) => {
+                limit = parseInt(e.target.value);
+                currentPage = 1; // reset to first page
+                loadTransaction(currentPage);
+           });
 
-            try {
-                const data = await res.json()
 
-                const tableData = document.getElementById('data');
-                tableData.innerHTML = "";
+            const loadTransaction = async (page = 1) => {
+                currentPage = page;
 
-                data.forEach((trans, index) => {
-                    const trElement = document.createElement('tr');
+                try {
+                    const res = await fetch("/transactions", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            clientId,
+                            page: currentPage,
+                            limit
+                        })
+                    });
 
-                    // Assuming trans.date holds the timestamp
-                    const dateObj = new Date(trans.date); // convert string to Date object
+                    const result = await res.json();
 
-                    // Extract date (YYYY-MM-DD)
-                    const date = dateObj.toLocaleDateString(); // e.g., 12/13/2025
+                    const transactions = result.data; // 👈 IMPORTANT
+                    const tableData = document.getElementById('data');
+                    tableData.innerHTML = "";
 
-                    // Extract time (HH:MM:SS)
-                    const time = dateObj.toLocaleTimeString(); // e.g., 14:03:45
+                    transactions.forEach((trans, index) => {
+                        const trElement = document.createElement('tr');
 
-                    trElement.innerHTML = `
-                        <td>${index + 1}</td>
-                        <td>${date}</td>
-                        <td>${time}</td>
-                        <td>${trans.in}</td>
-                        <td style="color: red">${trans.out}</td>
-                        <td>${trans.description}</td>
-                        <td>
-                            <delete style="background: rgba(200, 50, 50); color: white; cursor: pointer; padding:6px; border-radius: 8px; border:2px solid white;" onclick="deleteTransaction(${trans.id})" >Delete</delete>
-                        </td>
-                    `;
-                    tableData.appendChild(trElement);
-                });
-            }catch(error) {
-                console.log('Error has occur: ', error)
-            }
-        }
+                        const dateObj = new Date(trans.date);
+                        const date = dateObj.toLocaleDateString();
+                        const time = dateObj.toLocaleTimeString();
+
+                        trElement.innerHTML = `
+                            <td>${(currentPage - 1) * limit + index + 1}</td>
+                            <td>${date}</td>
+                            <td>${time}</td>
+                            <td>${trans.in}</td>
+                            <td style="color: red">${trans.out}</td>
+                            <td>${trans.description}</td>
+                            <td id="tbNotPrinted">
+                                <span style="background: rgba(200,50,50); color:white; cursor:pointer; padding:6px; border-radius:8px;"
+                                    onclick="deleteTransaction(${trans.id})">
+                                    Delete
+                                </span>
+                            </td>
+                        `;
+                        tableData.appendChild(trElement);
+                    });
+
+                    updatePagination(result.totalPages);
+
+                } catch (error) {
+                    console.error("Error has occurred:", error);
+                }
+            };
+
 
         loadTransaction();
 
+        //javascript logic for pagination
+        let totalPages = 1;
+
+        const updatePagination = (pages) => {
+            totalPages = pages;
+            document.getElementById("pageInfo").innerText =
+                `Page ${currentPage} of ${totalPages}`;
+        };
+
+        const nextPage = () => {
+            if (currentPage < totalPages) {
+                loadTransaction(currentPage + 1);
+            }
+        };
+
+        const prevPage = () => {
+            if (currentPage > 1) {
+                loadTransaction(currentPage - 1);
+            }
+        };
+
+
         const displayBalance = async () => {
             const balance = document.getElementById("balance");
+            const balance1 = document.getElementById("balance1");
             const res = await fetch(`/balance/${clientId}`);
 
             try {
@@ -649,7 +846,11 @@ aside a.active {
                     style: 'currency',
                     currency: 'TZS'
                 }).format(data.balance);
-
+                
+                balance1.innerText = new Intl.NumberFormat('en-TZ', {
+                    style: 'currency',
+                    currency: 'TZS'
+                }).format(data.balance);
 
                if (data.balance < 0) {
                     balance.style.color = 'red';
@@ -703,6 +904,20 @@ const editClient = () =>{
              document.getElementById('editPop').style.display='none'
             })
 }
+
+//Print Transactions 
+const printTrans = () => {
+    // Make the hidden print details visible
+    document.getElementById("printDetails").style.display = 'flex';
+    document.getElementById("printDetails").style.justifyContent = 'between';
+    document.getElementById("printDetails").style.alignContent = 'center';
+
+    // Trigger print
+    window.print();
+
+    // Optional: hide it again after printing
+    document.getElementById("printDetails").style.display = 'none';
+};
 
 
 

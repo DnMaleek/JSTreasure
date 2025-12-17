@@ -52,7 +52,7 @@ app.get('/view_clients', (req,res) =>{
 // get the page data
 app.get('/view_clients_data', (req, res) => {
     
-    const sql = "SELECT * FROM clients"
+    const sql = "SELECT * FROM clients ORDER BY Id DESC"
 
     db.query(sql,(err,result)=>{
         if (err) throw err;
@@ -97,9 +97,6 @@ app.post('/add', (req,res) =>{
                 }
 
             )
-
-
-
 })
 
 app.get('/view_client/:client_id', (req, res) => {
@@ -218,17 +215,48 @@ app.get('/balance/:clientId', (req, res) => {
 
 
 app.post('/transactions', (req, res) => {
-    const { clientId } = req.body;
+    const { clientId, page = 1, limit = 10 } = req.body;
 
-    const sql = "SELECT * FROM transactions WHERE client_id = ? ORDER BY id DESC";
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
+    const offset = (pageNum - 1) * limitNum;
 
-    db.query(sql, [clientId], (error, results) => {
-        if(error) {
-        return res.status(400).json({message: Error.err})
-        }
-        res.status(200).json(results)
+    const dataSql = `
+        SELECT * 
+        FROM transactions 
+        WHERE client_id = ? 
+        ORDER BY id DESC 
+        LIMIT ? OFFSET ?
+    `;
+
+    const countSql = `
+        SELECT COUNT(*) AS total 
+        FROM transactions 
+        WHERE client_id = ?
+    `;
+
+    db.query(countSql, [clientId], (err, countResult) => {
+        if (err) return res.status(500).json({ message: err.message });
+
+        const totalRecords = countResult[0].total;
+        const totalPages = Math.ceil(totalRecords / limitNum);
+
+        db.query(dataSql, [clientId, limitNum, offset], (error, results) => {
+            if (error) {
+                return res.status(500).json({ message: error.message });
+            }
+
+            res.status(200).json({
+                page: pageNum,
+                limit: limitNum,
+                totalRecords,
+                totalPages,
+                data: results
+            });
+        });
     });
-})
+});
+
 
 app.delete("/delete/:clientId", (req, res) => {
     const clientId = req.params.clientId;

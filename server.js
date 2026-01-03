@@ -53,11 +53,6 @@ app.get('/view_clients', (req,res) =>{
     res.sendFile(path.join(__dirname,'public','view_clients.html'))
 })
 
-app.get('/treasures', (req,res) =>{
-    res.sendFile(path.join(__dirname,'public','treasures.html'))
-})
-
-
 // Fetch clients with pagination + search
 app.get('/view_clients_data', (req, res) => {
     const page = parseInt(req.query.page) || 1;

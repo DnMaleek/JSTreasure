@@ -1,4 +1,4 @@
 # Node modules
+dbase/
 node_modules/
 .env
-/public/treasures.html

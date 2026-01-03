@@ -198,6 +198,279 @@ aside a.active {
     text-align: center;
 }
 
+.delete-popbg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); 
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Popup card styling */
+.delete-popcard, .success-popcard {
+    background: #fff;
+    padding: 50px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Warning title */
+.delete-popcard h3 {
+    font-size: 14px;
+    font-weight: bold;
+    opacity: .7;
+    color: gray;
+}
+
+.success-popcard h3 {
+    font-size: 14px;
+    font-weight: bold;
+    opacity: .7;
+    color: green;
+}
+
+.success-popcard i {
+    font-size: 50px;
+    font-weight: bold;
+    color: green;
+}
+.delete-popcard .i-con {
+    font-size: 50px;
+    text-align: center;
+    color: red;
+    box-shadow: 4px 2px 20px solid black;
+}
+
+/* Buttons container */
+.delete-btn {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+}
+
+/* Cancel button styling */
+#cancelBtn3 {
+    background: #e2e8f0; 
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+#cancelBtn3:hover {
+    border: 3px solid green;
+    background: #cad0d7;
+}
+
+/* Delete button styling */
+#deleteConfirm {
+    background: #e2e8f0;
+    color: red;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#deleteConfirm:hover {
+    border: 2px solid #9b2c2c;
+    background: rgb(241, 149, 149);
+    transform: scale(1.05);
+}
+
+.success-popbg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); 
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+}
+
+/* Pagination buttons */
+#pagination {
+    display: flex;
+    gap: 6px;
+}
+
+#pagination button {
+    min-width: 34px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    background: #e2e8f0;
+    color: #1b6ca8;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#pagination button:hover {
+    background: #1b6ca8;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+#pagination button.active {
+    background: linear-gradient(135deg, #1b6ca8, #0f4c75);
+    color: white;
+    font-weight: bold;
+}
+
+/* Entries dropdown */
+.entries-select {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #374151;
+}
+
+.entries-select label {
+    font-weight: 600;
+}
+
+.entries-select select {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    background: white;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.entries-select select:hover {
+    border-color: #1b6ca8;
+}
+
+.entries-select select:focus {
+    border-color: #1b6ca8;
+    box-shadow: 0 0 0 3px rgba(27, 108, 168, 0.2);
+}
+
+/* ADD CLIENT POP STLY */
+.popbg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px);
+    z-index: 100;
+}
+
+.popcard {
+    background: #ffffff;
+    padding: 30px 25px;
+    border-radius: 14px;
+    width: 420px;
+    animation: pop 0.4s ease;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+.cancelBtn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+#cancelBtn {
+    height: 38px;
+    width: 38px;
+    font-size: 26px;
+    border: none;
+    background: transparent;
+    color: #dc2626;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#cancelBtn:hover {
+    transform: rotate(90deg) scale(1.1);
+}
+
+.addClient {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.addClient h2 {
+    color: #1b6ca8;
+    margin-bottom: 10px;
+}
+
+.addClient button {
+    width: 45%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #1b6ca8, #08497b);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.addClient button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(22,163,74,0.4);
+}
+
+form input {
+    width: 100%;
+    height: 42px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    padding: 0 10px;
+    text-align: center;
+}
+
+#info {
+    color: gray;
+    font-weight: bold;
+    font-size: 14px;
+    opacity: .6;
+    margin-bottom: 4px;
+    font-style: italic;
+}
 </style>
 
 <body>
@@ -208,7 +481,9 @@ aside a.active {
                 <li><a href="/" class="active">Home</a></li>
                 <li><a href="/add">New Client</a></li>
                 <li><a href="/view_clients">Manage Clients</a></li>
-                <li><a href="">Analysis</a></li>
+                <li><a href="/analytics">Analysis</a></li>
+                <li><a href="/treasures">Treasures</a></li>
+
             </ul>
             <div class="sidebar-footer">
                 &copy; 2025 Treasure MS
@@ -216,12 +491,12 @@ aside a.active {
         </aside>
    <div class="container">
     <div class="heading">
-        <div class="head">
-            <h2 style="color: #1b6ca8;">Manage Clients</h2>
+        <div class="head" id="addClient">
+            <h2 style="color: #1b6ca8; cursor: pointer;">Manage Clients</h2>
             <i class="fa-solid fa-circle-plus"></i>
         </div>
         <div class="search">
-            <input type="text" name="" id="" placeholder="Search clients here....">
+            <input type="text" name="" id="search" placeholder="Search clients here....">
         </div>
     </div>
      
@@ -238,13 +513,72 @@ aside a.active {
         <tbody id="tableData">
         </tbody>
     </table>
+    <div class="table-controls">
+        <div id="pagination"></div>
+
+        <div class="entries-select">
+            <label for="limit">Entries per page</label>
+            <select id="limit">
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+    </div>
+
 
    </div>
     </main>
 
+    <!--VERIFICATION POPUP ON DELETE-->
+        <div class="delete-popbg" id="deletePop">
+            <div class="delete-popcard">
+                <i class="fa-solid fa-trash i-con"></i>
+                <h3>
+                    Careful, This action Can't be Undone!
+                </h3>
+                <div class="delete-btn">
+                    <button id="cancelBtn3">
+                        Cancel
+                    </button>
+                    <button id="deleteConfirm">Delete</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="success-popbg" id="successPop">
+            <div class="success-popcard">
+                <i class="fa-solid fa-circle-check"></i>
+                <h3 id="msg"></h3>
+            </div>
+        </div>
 
-<script src="view_clients.js">
-</script>
+    <!--ADD CLIENT POP-->
+       <div class="popbg" id="popbg">
+
+            <div class="popcard">
+                <div class="cancelBtn" >
+                    <button id="cancelBtn">
+                       <i class="fa-regular fa-circle-xmark fa-shake"></i>
+                    </button>
+                </div>
+
+                <form class="addClient" id="addClientForm">
+                    <h2>Add details of your client here</h2>
+                        <h3 id="info">Add properly, Never repeat.</h3>
+                    <input type="text" name="Name" id="Name" placeholder="Name">
+                    <input type="email" name="Email" id="Email" placeholder="Email">
+                    <input type="text" name="Tel" id="Tel" placeholder="Phone">
+                    <button type="submit">Add</button>
+                </form>
+
+            </div>
+
+        </div>
+
+    <!-- SUCCESS POPUP -->
+
+<script src="view_clients.js"></script>
 
 </body>
 </html>

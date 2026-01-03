@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis | Treasure</title>
+</head>
+
+<style>
+* {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #eef2f6, #e3e9ef);
+}
+
+main {
+    display: flex;
+    gap: 2%;
+     margin-top: 20px;
+
+}
+
+aside {
+    background: linear-gradient(180deg, #0f4c75, #1b6ca8);
+    height: calc(100vh - 20px);
+    width:360px;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.18);
+    position: sticky;
+    top: 0;
+}
+
+aside h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    font-size: 22px;
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+aside li {
+    margin: 6px 12px;
+}
+
+aside a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: #eaf4ff;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+aside a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(6px);
+}
+
+aside a.active {
+    background: #ffffff;
+    color: #1b6ca8;
+    font-weight: 600;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 15px;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 70%;
+    min-width: 1080px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px 25px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+}
+
+.analytics-header h3 {
+    margin-top: 10px;
+    color: #1b6ca8;
+    margin-bottom: 4px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.analytics-header p {
+    color: #666;
+    font-size: 14px;
+}
+
+/* SUMMARY */
+.summary-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.summary-card {
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-left: 5px solid #1b6ca8;
+}
+
+.summary-card span {
+    font-size: 28px;
+    font-weight: bold;
+    display: block;
+    margin: 6px 0;
+}
+
+/* FINANCE */
+.finance-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.finance-card {
+    padding: 18px;
+    border-radius: 12px;
+    color: #fff;
+}
+
+.finance-card.in { background: #2ecc71; }
+.finance-card.out { background: #e74c3c; }
+.finance-card.balance { background: #3498db; }
+
+.finance-card span {
+    font-size: 26px;
+    font-weight: bold;
+    display: block;
+    margin: 6px 0;
+}
+
+/* CHARTS */
+.charts-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.chart-box {
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.chart-placeholder {
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f6f8;
+    border-radius: 8px;
+    color: #888;
+}
+
+.combine-secs {
+    display: flex;
+    align-items: flex-start; /* VERY IMPORTANT */
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.top-clients-section {
+    flex: 2; /* Takes more space */
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+
+/* TABLE */
+.top-clients-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.top-clients-section th,
+.top-clients-section td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+
+.top-clients-section th {
+    text-align: left;
+    background:#3175a3;
+    color: white;
+}
+
+/* RECENT */
+.recent-section {
+    flex: 1; /* Smaller side panel */
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.recent-section h3 {
+    color:#1b6ca8;
+}
+.recent-section ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.recent-section li {
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #e5eaee;
+    border-radius: 8px;
+    border: 1px solid rgb(150, 150, 150);
+}
+
+
+/* FOOTER */
+.analytics-footer {
+    margin-top: 20px;
+    text-align: center;
+    color: #777;
+}
+
+@media (max-width: 900px) {
+    .combine-secs {
+        flex-direction: column;
+    }
+}
+
+</style>
+
+<body>
+    <main>
+       <aside>
+            <h2>Treasure MS</h2>
+            <ul>
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/add">New Client</a></li>
+                <li><a href="/view_clients">Manage Clients</a></li>
+                <li><a href="/analytics">Analysis</a></li>
+                <li><a href="/treasures">Treasures</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                &copy; 2025 Treasure MS
+            </div>
+        </aside>
+<div class="container">
+
+    <!-- PAGE HEADER -->
+    <section class="analytics-header">
+        <h3>Analytics</h3>
+        <p>Overview of system performance and financial activity</p>
+    </section>
+
+    <!-- SUMMARY CARDS -->
+    <section class="summary-section">
+        <div class="summary-card">
+            <h3>Total Clients</h3>
+            <span id="totalClients">--</span>
+            <small>Registered clients</small>
+        </div>
+
+        <div class="summary-card">
+            <h3>Total Transactions</h3>
+            <span id="totalTransactions">--</span>
+            <small>All transaction records</small>
+        </div>
+
+        <div class="summary-card">
+            <h3>Net Balance</h3>
+            <span id="netBalance">TZS --</span>
+            <small>Current system balance</small>
+        </div>
+    </section>
+
+    <!-- FINANCIAL OVERVIEW -->
+    <section class="finance-section">
+        <div class="finance-card in">
+            <h3>Total Money In</h3>
+            <span id="totalIn">TZS --</span>
+            <small>Income received</small>
+        </div>
+
+        <div class="finance-card out">
+            <h3>Total Money Out</h3>
+            <span id="totalOut">TZS --</span>
+            <small>Expenses paid</small>
+        </div>
+
+        <div class="finance-card balance">
+            <h3>Profit / Loss</h3>
+            <span id="profitLoss">TZS --</span>
+            <small>Net financial result</small>
+        </div>
+    </section>
+
+    <!-- CHARTS -->
+    <section class="charts-section">
+        <div class="chart-box">
+            <h3>Transactions Over Time</h3>
+            <div class="chart-placeholder">Line Chart</div>
+        </div>
+
+        <div class="chart-box">
+            <h3>Money In vs Money Out</h3>
+            <div class="chart-placeholder">Bar Chart</div>
+        </div>
+    </section>
+
+   <div class="combine-secs">
+     <!-- TOP CLIENTS -->
+    <section class="top-clients-section">
+        <h3>Top Clients by Balance</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th>Email</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody id="topClients">
+                <tr>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>TZS --</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- RECENT ACTIVITY -->
+    <section class="recent-section">
+        <h3>Recent Transactions</h3>
+        <ul id="recentTransactions">
+            <li>-- No recent activity</li>
+        </ul>
+    </section>
+   </div>
+
+    <!-- FOOTER NOTE -->
+    <section class="analytics-footer">
+        <small>Data updates automatically • Currency: TZS</small>
+    </section>
+
+</div>
+    </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    loadAnalyticsSummary();
+    loadTopClients();
+    loadRecentTransactions();
+
+    // Refresh analytics every 10 seconds
+    setInterval(loadAnalyticsSummary, 10000);
+});
+
+// GLOBAL variable to track previous balance
+let previousBalance = null;
+
+// SUMMARY + FINANCIAL DATA
+function loadAnalyticsSummary() {
+    fetch('/analytics_data')
+        .then(res => res.json())
+        .then(data => {
+            updateProfitLoss(data);
+
+            // Summary cards
+            document.getElementById('totalClients').innerText = data.totalClients;
+            document.getElementById('totalTransactions').innerText = data.totalTransactions;
+            document.getElementById('netBalance').innerText = formatCurrency(data.totalBalance);
+
+            // Finance cards
+            document.getElementById('totalIn').innerText = formatCurrency(data.totalIn);
+            document.getElementById('totalOut').innerText = formatCurrency(-1 * data.totalOut);
+        })
+        .catch(err => console.error('Analytics summary error:', err));
+}
+
+// Update profit/loss with arrows and color flash
+function updateProfitLoss(data) {
+    const profitLossElem = document.getElementById('profitLoss');
+    const currentBalance = data.totalBalance;
+
+    let arrow = '';
+    let color = '';
+
+    if (previousBalance !== null) {
+        if (currentBalance > previousBalance) {
+            arrow = ' 🔺';
+            color = 'green';
+        } else if (currentBalance < previousBalance) {
+            arrow = ' 🔻';
+            color = 'red';
+        }
+    }
+
+    // Update element with arrow
+    profitLossElem.innerText = formatCurrency(currentBalance) + arrow;
+
+    // Flash color if there is a change
+    if (color) {
+        profitLossElem.style.color = color;
+        setTimeout(() => {
+            profitLossElem.style.color = ''; // reset after 1s
+        }, 1000);
+    }
+
+    previousBalance = currentBalance;
+}
+
+// TOP CLIENTS
+function loadTopClients() {
+    fetch('/analytics_top_clients')
+        .then(res => res.json())
+        .then(clients => {
+            const tbody = document.getElementById('topClients');
+            tbody.innerHTML = '';
+
+            if (clients.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3">No data available</td></tr>`;
+                return;
+            }
+
+            clients.forEach((client, idx) => {
+                let icon = '';
+                if (idx === 0 && client.balance > 0) icon = '👑';
+                else if (idx === 1 && client.balance > 0) icon = '🥈';
+                else if (idx === 2 && client.balance > 0) icon = '🥉';
+                else if (idx === 3 && client.balance > 0) icon = '⭐⭐';
+                else if (idx === 4 && client.balance > 0) icon = '⭐';
+                else icon = '';
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${icon} ${client.Name}</td>
+                        <td>${client.Email}</td>
+                        <td>${formatCurrency(client.balance)}</td>
+                    </tr>
+                `;
+            });
+        })
+        .catch(err => console.error('Top clients error:', err));
+}
+
+// RECENT TRANSACTIONS
+function loadRecentTransactions() {
+    fetch('/analytics_recent_transactions?limit=6')
+        .then(res => res.json())
+        .then(transactions => {
+            const list = document.getElementById('recentTransactions');
+            list.innerHTML = '';
+
+            if (transactions.length === 0) {
+                list.innerHTML = '<li>No recent transactions</li>';
+                return;
+            }
+
+            transactions.forEach(tx => {
+                const type = tx.in > 0 ? 'IN' : 'OUT';
+                const amount = tx.in > 0 ? tx.in : Math.abs(tx.out);
+
+                list.innerHTML += `
+                    <li>
+                        <strong>${tx.clientName}</strong> — 
+                        <span>${type}</span> : ${formatCurrency(amount)}
+                        <br>
+                        <small>${tx.description || 'No description'}</small>
+                    </li>
+                `;
+            });
+        })
+        .catch(err => console.error('Recent transactions error:', err));
+}
+
+// HELPER
+function formatCurrency(value) {
+    return new Intl.NumberFormat('en-TZ', {
+        style: 'currency',
+        currency: 'TZS'
+    }).format(value || 0);
+}
+</script>
+
+
+</body>
+</html>

@@ -44,25 +44,78 @@ app.get('/add', (req,res) =>{
     res.sendFile(path.join(__dirname,'public','add_client.html'))
 })
 
+app.get('/analytics', (req,res) =>{
+    res.sendFile(path.join(__dirname,'public','analytics.html'))
+})
+
 // serve the page
 app.get('/view_clients', (req,res) =>{
     res.sendFile(path.join(__dirname,'public','view_clients.html'))
 })
 
-// get the page data
-app.get('/view_clients_data', (req, res) => {
-
-    const sql = "SELECT * FROM clients ORDER BY Id DESC"
-
-    db.query(sql,(err,result)=>{
-        if (err) throw err;
-
-        if (result.length >= 0) {
-            return res.json(result);
-        }
-
-    })
+app.get('/treasures', (req,res) =>{
+    res.sendFile(path.join(__dirname,'public','treasures.html'))
 })
+
+
+// Fetch clients with pagination + search
+app.get('/view_clients_data', (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search || "";
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    let params = [];
+
+    if (search) {
+        whereClause = `
+            WHERE Name LIKE ?
+            OR Email LIKE ?
+            OR Tel LIKE ?
+        `;
+        const keyword = `%${search}%`;
+        params.push(keyword, keyword, keyword);
+    }
+
+    const dataSql = `
+        SELECT * FROM clients
+        ${whereClause}
+        ORDER BY Id DESC
+        LIMIT ? OFFSET ?
+    `;
+
+    const countSql = `
+        SELECT COUNT(*) AS total
+        FROM clients
+        ${whereClause}
+    `;
+
+    // First get total count
+    db.query(countSql, params, (err, countResult) => {
+        if (err) return res.status(500).json(err);
+
+        const total = countResult[0].total;
+        const totalPages = Math.ceil(total / limit);
+
+        // Then get paginated data
+        db.query(
+            dataSql,
+            [...params, limit, offset],
+            (err, dataResult) => {
+                if (err) return res.status(500).json(err);
+
+                res.json({
+                    data: dataResult,
+                    currentPage: page,
+                    totalPages,
+                    total
+                });
+            }
+        );
+    });
+});
+
 
 //Add Client
 app.post('/add', (req,res) =>{
@@ -98,6 +151,24 @@ app.post('/add', (req,res) =>{
 
             )
 })
+
+
+// Add users by Batch
+app.post('/addClients', async (req, res) => {
+    const clients = req.body; // now expects an array of clients
+    try {
+        for (let client of clients) {
+            await db.query(
+                'INSERT INTO clients (Name, Email, Tel) VALUES (?, ?, ?)',
+                [client.Name, client.Email, client.Tel]
+            );
+        }
+        res.status(200).json({ message: 'All clients added successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 
 app.get('/view_client/:client_id', (req, res) => {
 
@@ -294,6 +365,86 @@ app.delete('/transaction/delete/:trans_id', (req, res) => {
         res.status(200).json({message: "Transaction Deleted successfylly!"})
     })
 })
+
+// Analytics data from all tables
+app.get('/analytics_data', (req, res) => {
+
+    const sql = `
+        SELECT 
+            (SELECT COUNT(*) FROM clients) AS totalClients,
+
+            (SELECT IFNULL(SUM(\`in\`), 0) FROM transactions) AS totalIn,
+
+            (SELECT IFNULL(SUM(\`out\`), 0) FROM transactions) AS totalOut,
+
+            (SELECT IFNULL(SUM(\`in\`) + SUM(\`out\`), 0) FROM transactions) AS totalBalance,
+
+            (SELECT COUNT(*) FROM transactions) AS totalTransactions
+    `;
+
+    db.query(sql, (error, results) => {
+        if (error) {
+            return res.status(500).json({ message: "Database Error", error });
+        }
+
+        res.json(results[0]);
+    });
+});
+
+// Top clients by balance
+app.get('/analytics_top_clients', (req, res) => {
+
+    const sql = `
+        SELECT 
+            c.Id,
+            c.Name,
+            c.Email,
+            IFNULL(SUM(t.\`in\`) + SUM(t.\`out\`), 0) AS balance
+        FROM clients c
+        LEFT JOIN transactions t ON c.Id = t.client_id
+        GROUP BY c.Id
+        ORDER BY balance DESC
+        LIMIT 10    
+    `;
+
+    db.query(sql, (error, results) => {
+        if (error) {
+            return res.status(500).json({ message: "Database Error", error });
+        }
+
+        res.json(results);
+    });
+});
+
+// Getting recent transactions
+app.get('/analytics_recent_transactions', (req, res) => {
+
+    const limit = parseInt(req.query.limit) || 5;
+
+    const sql = `
+        SELECT 
+            t.id,
+            t.client_id,
+            t.\`in\`,
+            t.\`out\`,
+            t.description,
+            t.date,
+            c.Name AS clientName
+        FROM transactions t
+        JOIN clients c ON t.client_id = c.Id
+        ORDER BY t.id DESC
+        LIMIT ?
+    `;
+
+    db.query(sql, [limit], (error, results) => {
+        if (error) {
+            return res.status(500).json({ message: "Database Error", error });
+        }
+
+        res.json(results);
+    });
+});
+
 
 app.listen(5000,()=>{
     console.log("http://localhost:5000")

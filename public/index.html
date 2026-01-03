@@ -4,67 +4,210 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Treasure</title>
+    <style>
+        /* ==== Original styles (unchanged) ==== */
+        * {
+            font-family: sans-serif;
+            margin: 0;
+        }
+
+        body {
+            background-color: rgb(231, 231, 231);
+        }
+
+        .intro {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        header {
+            padding: 20px;
+            background-color: rgb(231, 231, 231);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            gap: 5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 50px 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            border: 1px solid rgb(239, 239, 239);
+            transition: all 0.3s;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .content:hover {
+            border: 2px solid rgb(239, 239, 239);
+            background-color: rgb(225, 225, 225);
+            transform: scale(1.1) translateY(10px) rotate(0.5deg);
+        }
+        
+        button {
+            padding: 10px 30px;
+            border: none;
+            border-radius: 5px;   
+            background-color: rgb(8, 68, 99);
+            color: rgb(219, 219, 219);
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: rgb(0, 0, 0);
+        }
+
+        hr {
+            margin-top: 10px;
+        }
+
+        /* ==== New features styling ==== */
+        .section {
+            width: 85%;
+            margin: 4rem auto;
+            text-align: center;
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .features-grid .feature-card {
+            background: linear-gradient(145deg, #e0f7ff, #ffffff);
+            border-radius: 12px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            transition: all 0.3s ease;
+        }
+
+        .features-grid .feature-card:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.18);
+        }
+
+        .features-grid .feature-card h3 {
+            color: #04445f;
+            margin-bottom: 0.5rem;
+        }
+
+        /* How It Works Section */
+        .how-it-works ol {
+            counter-reset: step-counter;
+            max-width: 700px;
+            margin: 2rem auto;
+            padding-left: 0;
+        }
+
+        .how-it-works li {
+            list-style: none;
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 1.8rem;
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 20px 20px 50px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .how-it-works li::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #04445f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .how-it-works li:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+        }
+
+        /* Why Use Section */
+        .why-use {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .why-use .why-card {
+            flex: 1 1 250px;
+            background: linear-gradient(135deg, #e0f7ff, #ffffff);
+            border-radius: 12px;
+            padding: 25px 20px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .why-use .why-card:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+
+        .why-use h3 {
+            color: #04445f;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Testimonials Section */
+        .notes ul {
+            list-style: none;
+            padding: 0;
+            max-width: 700px;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .notes ul li {
+            background: #fff;
+            border-left: 5px solid #04445f;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            font-style: italic;
+            transition: all 0.3s ease;
+        }
+
+        .notes ul li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+        }
+    </style>
 </head>
-<style>
-    * {
-        font-family:sans-serif;
-        margin: 0;
-    }
-    body {
-        background-color: rgb(231, 231, 231);
-    }
-
-    .intro{
-        display: flex;
-        justify-content: center;
-        margin-top: 2rem;
-    }
-    header {
-        padding: 20px;
-        background-color: rgb(231, 231, 231);
-    }
-    h1 {
-        text-align: center;
-    }
-    main {
-        display: flex;
-        justify-content: center;
-        gap: 5rem;
-        margin-top: 2rem;
-    }
-
-    .content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-        padding: 50px 10px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        border-radius: 8px;
-        border: 1px solid rgb(239, 239, 239);
-        transition: all 0.3s;
-    }
-
-    .content:hover {
-        border: 2px solid rgb(239, 239, 239);
-        background-color: rgb(225, 225, 225);
-        transform: scale(1.1) translateY(10px) rotate(0.5deg);
-    }
-    
-    button{
-        padding: 10px 30px;
-        border: none;
-        border-radius: 5px;   
-        background-color: rgb(8, 68, 99);
-        color: rgb(219, 219, 219);
-    }
-
-    a {
-        text-decoration: none;
-        color: rgb(0, 0, 0);
-    }
-
-</style>
 <body>
 <header>
    <h1>TREASURE DASHBOARD</h1> 
@@ -74,7 +217,6 @@
     <p>Manage your clients transaction daily</p>
 </div>
 <main>
-
     <a href="/add"> 
      <div class="content">
         <h2>Add client</h2>
@@ -91,14 +233,13 @@
     </div>
     </a>
 
-    <a href="">
+    <a href="/analytics">
     <div class="content">
-        <h2>Export Transactios</h2>
-        <p>Download transactions as a CSV file between dates.</p>
+        <h2>Analytics</h2>
+        <p>View the analysis of the transactions made on the system.</p>
         <button>GO</button>
     </div>
     </a>
-    
 </main>
 
 </body>

@@ -81,8 +81,7 @@ h2 {
 table {
     width: 100%;
     border-collapse: collapse;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-radius: 10px;
     overflow: hidden;
     font-size: 12.5px;
 }
@@ -206,8 +205,7 @@ tr button:hover {
     box-shadow: 0 8px 20px rgba(22,163,74,0.4);
 }
 
-form select,
-form input {
+form select, form input {
     width: 100%;
     height: 42px;
     border-radius: 8px;
@@ -451,6 +449,103 @@ aside a.active {
     }
 }
 
+.delete-popbg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Popup card styling */
+.delete-popcard {
+    background: #fff;
+    padding: 50px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Warning title */
+.delete-popcard h3 {
+    font-size: 14px;
+    font-weight: bold;
+    opacity: .7;
+    color: gray;
+}
+.delete-popcard .i-con {
+    font-size: 50px;
+    text-align: center;
+    color: red;
+    box-shadow: 4px 2px 20px solid black;
+}
+
+/* Buttons container */
+.delete-btn {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+}
+
+/* Cancel button styling */
+#cancelBtn3 {
+    background: #e2e8f0;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+#cancelBtn3:hover {
+    border: 3px solid green;
+    background: #cad0d7;
+}
+
+/* Delete button styling */
+#deleteConfirm {
+    background: #e2e8f0;
+    color: red;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#deleteConfirm:hover {
+    border: 2px solid #9b2c2c;
+    background: rgb(241, 149, 149);
+    transform: scale(1.05);
+}
+
+.success-popbg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); 
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
 
 </style>
 <body>
@@ -465,7 +560,8 @@ aside a.active {
                 <li><a href="/" class="active">Home</a></li>
                 <li><a href="/add">New Client</a></li>
                 <li><a href="/view_clients">Manage Clients</a></li>
-                <li><a href="">Analysis</a></li>
+                <li><a href="/analytics">Analysis</a></li>
+                <li><a href="/treasures">Treasures</a></li>
             </ul>
             <div class="sidebar-footer">
                 &copy; 2025 Treasure MS
@@ -492,7 +588,7 @@ aside a.active {
                 
             </div>
 
-            <table style="width: 100%;">
+            <table>
                 <thead>
                     <tr>
                         <th>SN</th>
@@ -531,7 +627,10 @@ aside a.active {
             </div>
 
             <div>
-                <button onclick="printTrans()">Print</button>
+                <button onclick="printTrans()">
+                    <i class="fa-solid fa-print"></i>
+                    Print
+                </button>
             </div>
             </div>
 
@@ -565,6 +664,23 @@ aside a.active {
 
         </div>
 
+        <!--VERIFICATION POPUP ON DELETE-->
+        <div class="delete-popbg" id="deletePop">
+            <div class="delete-popcard">
+                <i class="fa-solid fa-trash i-con"></i>
+                <h3>
+                    Careful, This action Can't be Undone!
+                </h3>
+                <div class="delete-btn">
+                    <button id="cancelBtn3">
+                        Cancel
+                    </button>
+                    <button id="deleteConfirm">Delete</button>
+                </div>
+            </div>
+        </div>
+
+
         <!--POP UP FOR EDIT CLIENT --> 
 
         <div class="popbg" id="editPop">
@@ -578,7 +694,7 @@ aside a.active {
 
                 <form class="addTransaction" id="editUser">
 
-                    <h2>Add client transaction here</h2>
+                    <h2>Edit Client Details</h2>
                     <input type="text" id="nameEdt" placeholder="Name">
                     <input type="emai" id="emailEdt" placeholder="Email">
                     <input type="text" id="phoneEdt" placeholder="Phone">
@@ -589,11 +705,8 @@ aside a.active {
 
             </div>
         </div>
-
-
     </main>
 
-    
 <script src="/view_client.js"></script>
 </body>
 </html>

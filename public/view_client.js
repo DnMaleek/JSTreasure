@@ -1,5 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-        const clientId = window.location.pathname.split('/').pop();
+ const clientId = window.location.pathname.split('/').pop();
             
             async function loadClient() {
 
@@ -177,35 +176,51 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
 
                     const result = await res.json();
-
-                    const transactions = result.data; // 👈 IMPORTANT
+                    const transactions = result.data; // important
                     const tableData = document.getElementById('data');
                     tableData.innerHTML = "";
 
-                    transactions.forEach((trans, index) => {
-                        const trElement = document.createElement('tr');
-
-                        const dateObj = new Date(trans.date);
-                        const date = dateObj.toLocaleDateString();
-                        const time = dateObj.toLocaleTimeString();
-
-                        trElement.innerHTML = `
-                            <td>${(currentPage - 1) * limit + index + 1}</td>
-                            <td>${date}</td>
-                            <td>${time}</td>
-                            <td>${trans.in}</td>
-                            <td style="color: red">${trans.out}</td>
-                            <td>${trans.description}</td>
-                            <td id="tbNotPrinted">
-                                <span style="background: rgba(200,50,50); color:white; cursor:pointer; padding:6px; border-radius:8px;"
-                                    onclick="deleteTransaction(${trans.id})">
-                                    Delete
-                                </span>
-                            </td>
+                    if (transactions.length === 0) {
+                        tableData.innerHTML = `
+                            <tr style="height: calc(100vh - 300px)">
+                                <td colspan="7" style="
+                                    text-align: center;
+                                    color: #888;
+                                    font-size: 18px;
+                                    padding:20px;">
+                                <i class="fa-solid fa-ban" style="font-size: 100px; margin-bottom: 20px;"></i><br>
+                                    No Transaction(s) Found
+                                </td>
+                            </tr>
                         `;
-                        tableData.appendChild(trElement);
-                    });
+                    } else {
+                        transactions.forEach((trans, index) => {
+                            const trElement = document.createElement('tr');
 
+                            const dateObj = new Date(trans.date);
+                            const date = dateObj.toLocaleDateString();
+                            const time = dateObj.toLocaleTimeString();
+
+                            trElement.innerHTML = `
+                                <td>${(currentPage - 1) * limit + index + 1}</td>
+                                <td>${date}</td>
+                                <td>${time}</td>
+                                <td>${trans.in}</td>
+                                <td style="color: red">${trans.out}</td>
+                                <td>${trans.description}</td>
+                                <td id="tbNotPrinted">
+                                    <span 
+                                        style="background: rgba(200,50,50); color:white; cursor:pointer; padding:6px; border-radius:8px;"
+                                        onclick="openDeletePopup(${trans.id})">
+                                        Delete
+                                    </span>
+                                </td>
+                            `;
+                            tableData.appendChild(trElement);
+                        });
+                    }
+
+                    // Update pagination (function defined elsewhere)
                     updatePagination(result.totalPages);
 
                 } catch (error) {
@@ -299,6 +314,29 @@ document.addEventListener("DOMContentLoaded", () => {
         displayBalance();
 
 
+        // Deleting Popup for transactions
+        let deleteId = null;
+
+        const openDeletePopup = (trans_id) => {
+            deleteId = trans_id;
+
+            document.getElementById('deletePop').style.display = 'flex';
+
+            document.getElementById('cancelBtn3').onclick = () => {
+                document.getElementById('deletePop').style.display = 'none';
+                deleteId = null;
+            };
+
+            document.getElementById('deleteConfirm').onclick = async () => {
+                if (deleteId !== null) {
+                    await deleteTransaction(deleteId);
+                    document.getElementById('deletePop').style.display = 'none';
+                    deleteId = null;
+                }
+            };
+        };
+
+
 //Edit client
 const editClient = () =>{
     document.getElementById('editPop').style.display='flex';
@@ -322,4 +360,3 @@ const printTrans = () => {
     document.getElementById("printDetails").style.display = 'none';
 };
 
-});

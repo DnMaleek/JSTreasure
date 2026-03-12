@@ -261,7 +261,7 @@ app.get('/balance/:clientId', (req, res) => {
         SELECT
             SUM(\`income\`) AS totalIn,
             SUM(\`outtake\`) AS totalOut,
-            SUM(\`income\`) + SUM(\`out\`) AS balance
+            SUM(\`income\`) + SUM(\`outtake\`) AS balance
         FROM transactions
         WHERE client_id = ?
     `;

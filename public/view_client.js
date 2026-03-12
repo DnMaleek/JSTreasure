@@ -1,4 +1,5 @@
  const clientId = window.location.pathname.split('/').pop();
+ console.log(clientId);
             
             async function loadClient() {
 
@@ -205,8 +206,8 @@
                                 <td>${(currentPage - 1) * limit + index + 1}</td>
                                 <td>${date}</td>
                                 <td>${time}</td>
-                                <td>${trans.in}</td>
-                                <td style="color: red">${trans.out}</td>
+                                <td>${trans.income}</td>
+                                <td style="color: red">${trans.outtake}</td>
                                 <td>${trans.description}</td>
                                 <td id="tbNotPrinted">
                                     <span 

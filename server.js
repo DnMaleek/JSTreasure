@@ -225,16 +225,16 @@ app.post('/add_transaction', (req, res) => {
     }
 
     const sql = `
-        INSERT INTO transactions (client_id, \`in\`, \`out\`, description)
+        INSERT INTO transactions (client_id, \`income\`, \`outtake\`, description)
         VALUES (?, ?, ?, ?)
     `;
 
     let inAmount = 0;
     let outAmount = 0;
 
-    if (type === "in") {
+    if (type === "income") {
         inAmount = amount;
-    } else if (type === "out") {
+    } else if (type === "outtake") {
         outAmount = -amount;
     } else {
         return res.status(400).json({ message: "Invalid transaction type" });
@@ -258,9 +258,9 @@ app.get('/balance/:clientId', (req, res) => {
 
     const sql = `
         SELECT
-            SUM(\`in\`) AS totalIn,
-            SUM(\`out\`) AS totalOut,
-            SUM(\`in\`) + SUM(\`out\`) AS balance
+            SUM(\`income\`) AS totalIn,
+            SUM(\`outtake\`) AS totalOut,
+            SUM(\`income\`) + SUM(\`out\`) AS balance
         FROM transactions
         WHERE client_id = ?
     `;
@@ -368,11 +368,11 @@ app.get('/analytics_data', (req, res) => {
         SELECT 
             (SELECT COUNT(*) FROM clients) AS totalClients,
 
-            (SELECT IFNULL(SUM(\`in\`), 0) FROM transactions) AS totalIn,
+            (SELECT IFNULL(SUM(\`income\`), 0) FROM transactions) AS totalIn,
 
-            (SELECT IFNULL(SUM(\`out\`), 0) FROM transactions) AS totalOut,
+            (SELECT IFNULL(SUM(\`outtake\`), 0) FROM transactions) AS totalOut,
 
-            (SELECT IFNULL(SUM(\`in\`) + SUM(\`out\`), 0) FROM transactions) AS totalBalance,
+            (SELECT IFNULL(SUM(\`income\`) + SUM(\`out\`), 0) FROM transactions) AS totalBalance,
 
             (SELECT COUNT(*) FROM transactions) AS totalTransactions
     `;
@@ -394,7 +394,7 @@ app.get('/analytics_top_clients', (req, res) => {
             c.Id,
             c.Name,
             c.Email,
-            IFNULL(SUM(t.\`in\`) + SUM(t.\`out\`), 0) AS balance
+            IFNULL(SUM(t.\`income\`) + SUM(t.\`outtake\`), 0) AS balance
         FROM clients c
         LEFT JOIN transactions t ON c.Id = t.client_id
         GROUP BY c.Id
@@ -420,8 +420,8 @@ app.get('/analytics_recent_transactions', (req, res) => {
         SELECT 
             t.id,
             t.client_id,
-            t.\`in\`,
-            t.\`out\`,
+            t.\`income\`,
+            t.\`outtake\`,
             t.description,
             t.date,
             c.Name AS clientName

@@ -94,6 +94,7 @@ async function fetchData(page = 1) {
         const res = await fetch(`/view_clients_data?page=${page}&limit=${limit}&search=${encodeURIComponent(searchValue)}`);
         const result = await res.json();
         const data = result.data;
+        console.log(data)
 
         tableData.innerHTML = "";
 

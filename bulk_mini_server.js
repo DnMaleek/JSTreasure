@@ -47,7 +47,7 @@ app.use(express.json());
         }
     });
 
-    app.listen(5000, () => {
+    app.listen(5050, () => {
         console.log("Bulk import server running on http://localhost:5050");
     });
 })();

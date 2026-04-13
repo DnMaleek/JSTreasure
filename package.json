@@ -5,10 +5,10 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "server.js",
+  "main": "bulk_mini_server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "dev": "nodemon bulk_mini_server.js"
   },
   "dependencies": {
     "body-parser": "^2.2.1",

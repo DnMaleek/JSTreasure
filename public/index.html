@@ -4,243 +4,279 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Treasure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* ==== Original styles (unchanged) ==== */
-        * {
-            font-family: sans-serif;
-            margin: 0;
+        * { box-sizing:border-box; font-family:'Segoe UI',sans-serif; margin:0; padding:0; }
+
+        body { background:linear-gradient(135deg,#eef2f6,#e3e9ef); min-height:100vh; }
+
+        /* ══════════════════════════════════
+           DESKTOP LAYOUT
+        ══════════════════════════════════ */
+        main { display:flex; gap:0; min-height:100vh; margin-top: 20px; }
+
+        /* ── SIDEBAR ── */
+        aside {
+            background:linear-gradient(180deg,#0f4c75,#1b6ca8);
+            height:100vh; width:240px; min-width:240px;
+            padding:30px 15px;
+            display:flex; flex-direction:column;
+            box-shadow:4px 0 15px rgba(0,0,0,0.15);
+            position:sticky; top:0; flex-shrink:0;
+        }
+        aside h2 {
+            color:#fff; text-align:center; margin-bottom:30px;
+            letter-spacing:1px; font-size:22px;
+        }
+        aside ul { list-style:none; padding:0; margin:0; }
+        aside li { margin:8px 0; }
+        aside a {
+            display:flex; align-items:center; gap:12px; padding:10px 15px;
+            color:#eaf4ff; text-decoration:none; font-size:14px;
+            border-radius:6px; transition:all 0.3s ease;
+        }
+        aside a:hover { background:rgba(255,255,255,0.15); transform:translateX(6px); }
+        aside a.active { background:#fff; color:#1b6ca8; font-weight:600; }
+        .sidebar-footer {
+            margin-top:auto; padding:15px; text-align:center;
+            font-size:13px; color:rgba(255,255,255,0.7);
         }
 
-        body {
-            background-color: rgb(231, 231, 231);
+        /* ── CONTENT AREA ── */
+        .page-content {
+            flex:1; min-width:0;
+            display:flex; flex-direction:column;
+            padding:40px;
         }
 
-        .intro {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
+        /* ── PAGE HEADER ── */
+        .page-header { margin-bottom:32px; }
+        .page-header h1 {
+            font-size:26px; font-weight:800; color:#1b6ca8;
+            letter-spacing:0.5px; margin-bottom:6px;
+        }
+        .page-header p { color:#64748b; font-size:14px; }
+
+        /* ── CARDS GRID ── */
+        .cards-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+            gap:24px;
+            max-width:900px;
         }
 
-        header {
-            padding: 20px;
-            background-color: rgb(231, 231, 231);
+        .card {
+            background:#fff; border-radius:16px;
+            padding:32px 28px;
+            box-shadow:0 4px 20px rgba(0,0,0,0.07);
+            border:1px solid #e2e8f0;
+            display:flex; flex-direction:column;
+            align-items:flex-start; gap:14px;
+            text-decoration:none; color:inherit;
+            transition:all 0.3s ease;
+            position:relative; overflow:hidden;
+        }
+        .card::before {
+            content:''; position:absolute;
+            right:-20px; bottom:-20px;
+            width:100px; height:100px;
+            border-radius:50%;
+            background:rgba(27,108,168,0.06);
+            transition:transform 0.3s ease;
+        }
+        .card:hover {
+            transform:translateY(-6px);
+            box-shadow:0 12px 32px rgba(27,108,168,0.15);
+            border-color:#b3d0e8;
+        }
+        .card:hover::before { transform:scale(1.4); }
+
+        .card-icon {
+            width:50px; height:50px; border-radius:14px;
+            background:linear-gradient(135deg,#1b6ca8,#0f4c75);
+            display:flex; align-items:center; justify-content:center;
+            color:#fff; font-size:20px;
+            box-shadow:0 4px 12px rgba(27,108,168,0.3);
         }
 
-        h1 {
-            text-align: center;
+        .card-text { flex:1; }
+        .card h2 { font-size:17px; font-weight:700; color:#1f2933; margin-bottom:6px; }
+        .card p  { font-size:13px; color:#64748b; line-height:1.5; }
+
+        .card-btn {
+            display:inline-flex; align-items:center; gap:8px;
+            padding:9px 20px; border-radius:10px; border:none;
+            background:linear-gradient(135deg,#1b6ca8,#0f4c75);
+            color:#fff; font-size:13px; font-weight:600;
+            cursor:pointer; transition:all 0.3s ease;
+            box-shadow:0 4px 12px rgba(27,108,168,0.25);
+        }
+        .card-btn:hover {
+            transform:translateY(-2px);
+            box-shadow:0 8px 20px rgba(27,108,168,0.35);
         }
 
-        main {
-            display: flex;
-            justify-content: center;
-            gap: 5rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
+        /* hide mobile-only elements on desktop */
+        #mobileHeader { display:none; }
+        .intro        { display:none; }
+        .mobile-nav   { display:none; }
+
+        /* ══════════════════════════════════
+           MOBILE
+        ══════════════════════════════════ */
+        @media (max-width:768px) {
+            body { background:#eef2f6; padding-bottom:72px; }
+
+            main { flex-direction:column; min-height:unset; }
+            aside { display:none; }
+
+            .page-content { padding:0; }
+            .page-header  { display:none; }
+
+            #mobileHeader {
+                display:block;
+                background:linear-gradient(135deg,#0f4c75,#1b6ca8);
+                padding:24px 20px 18px;
+                border-radius:0 0 24px 24px;
+                box-shadow:0 6px 20px rgba(15,76,117,0.35);
+            }
+            #mobileHeader h1 {
+                color:#fff; font-size:21px; letter-spacing:1.5px;
+                font-weight:800; text-align:center;
+            }
+
+            .intro {
+                display:flex; justify-content:center;
+                margin-top:16px; padding:0 20px;
+            }
+            .intro p { color:#64748b; font-size:13px; }
+
+            .cards-grid {
+                display:flex; flex-direction:column;
+                gap:10px; padding:16px 16px 0;
+                max-width:100%;
+            }
+
+            .card {
+                flex-direction:row; align-items:center;
+                padding:16px 18px; border-radius:18px; gap:0;
+                box-shadow:0 2px 14px rgba(0,0,0,0.07);
+            }
+            .card::before { display:none; }
+            .card:hover { transform:translateY(-2px); }
+
+            .card-icon {
+                width:40px; height:40px; border-radius:12px;
+                font-size:17px; margin-right:14px; flex-shrink:0;
+            }
+
+            .card-text { flex:1; min-width:0; }
+            .card h2 { font-size:14px; margin-bottom:2px; }
+            .card p   { font-size:12px; }
+
+            .card-btn {
+                margin-left:10px; flex-shrink:0;
+                padding:9px 14px; font-size:12px;
+                box-shadow:none;
+            }
+            .card-btn i { display:none; }
+
+            /* BOTTOM NAV */
+            .mobile-nav {
+                display:flex; position:fixed; bottom:0; left:0; right:0; z-index:9000;
+                background:linear-gradient(180deg,#0f4c75,#0a3a5c);
+                border-top:1px solid rgba(255,255,255,0.08);
+                box-shadow:0 -4px 24px rgba(0,0,0,0.35);
+                padding:6px 0 env(safe-area-inset-bottom,8px);
+                justify-content:space-around; align-items:center;
+            }
+            .mobile-nav a {
+                display:flex; flex-direction:column; align-items:center; gap:3px;
+                color:rgba(255,255,255,0.5); text-decoration:none;
+                font-size:10px; font-weight:500; padding:6px 12px;
+                border-radius:12px; transition:all 0.2s; min-width:60px; text-align:center;
+            }
+            .mobile-nav a i { font-size:20px; transition:transform 0.2s; }
+            .mobile-nav a.active { color:#fff; background:rgba(255,255,255,0.14); }
+            .mobile-nav a.active i { transform:translateY(-2px); filter:drop-shadow(0 2px 8px rgba(255,255,255,0.4)); }
         }
 
-        .content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            padding: 50px 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            border-radius: 8px;
-            border: 1px solid rgb(239, 239, 239);
-            transition: all 0.3s;
-            background-color: #fff;
-            text-align: center;
-        }
-
-        .content:hover {
-            border: 2px solid rgb(239, 239, 239);
-            background-color: rgb(225, 225, 225);
-            transform: scale(1.1) translateY(10px) rotate(0.5deg);
-        }
-        
-        button {
-            padding: 10px 30px;
-            border: none;
-            border-radius: 5px;   
-            background-color: rgb(8, 68, 99);
-            color: rgb(219, 219, 219);
-            cursor: pointer;
-        }
-
-        a {
-            text-decoration: none;
-            color: rgb(0, 0, 0);
-        }
-
-        hr {
-            margin-top: 10px;
-        }
-
-        /* ==== New features styling ==== */
-        .section {
-            width: 85%;
-            margin: 4rem auto;
-            text-align: center;
-        }
-
-        /* Features Section */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .features-grid .feature-card {
-            background: linear-gradient(145deg, #e0f7ff, #ffffff);
-            border-radius: 12px;
-            padding: 30px 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
-            transition: all 0.3s ease;
-        }
-
-        .features-grid .feature-card:hover {
-            transform: translateY(-6px) scale(1.05);
-            box-shadow: 0 14px 28px rgba(0,0,0,0.18);
-        }
-
-        .features-grid .feature-card h3 {
-            color: #04445f;
-            margin-bottom: 0.5rem;
-        }
-
-        /* How It Works Section */
-        .how-it-works ol {
-            counter-reset: step-counter;
-            max-width: 700px;
-            margin: 2rem auto;
-            padding-left: 0;
-        }
-
-        .how-it-works li {
-            list-style: none;
-            position: relative;
-            padding-left: 50px;
-            margin-bottom: 1.8rem;
-            background: #fff;
-            border-radius: 12px;
-            padding: 20px 20px 20px 50px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-        }
-
-        .how-it-works li::before {
-            counter-increment: step-counter;
-            content: counter(step-counter);
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #04445f;
-            color: #fff;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .how-it-works li:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 22px rgba(0,0,0,0.12);
-        }
-
-        /* Why Use Section */
-        .why-use {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .why-use .why-card {
-            flex: 1 1 250px;
-            background: linear-gradient(135deg, #e0f7ff, #ffffff);
-            border-radius: 12px;
-            padding: 25px 20px;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .why-use .why-card:hover {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-        }
-
-        .why-use h3 {
-            color: #04445f;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Testimonials Section */
-        .notes ul {
-            list-style: none;
-            padding: 0;
-            max-width: 700px;
-            margin: 2rem auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .notes ul li {
-            background: #fff;
-            border-left: 5px solid #04445f;
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-            font-style: italic;
-            transition: all 0.3s ease;
-        }
-
-        .notes ul li:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+        @media (max-width:480px) {
+            .cards-grid { padding:12px 12px 0; }
         }
     </style>
 </head>
 <body>
-<header>
-   <h1>TREASURE DASHBOARD</h1> 
+
+<!-- Mobile-only header (shown via CSS on small screens) -->
+<header id="mobileHeader">
+    <h1>TREASURE DASHBOARD</h1>
 </header>
-<hr> 
 <div class="intro">
     <p>Manage your clients transaction daily</p>
 </div>
-<main>
-    <a href="/add"> 
-     <div class="content">
-        <h2>Add client</h2>
-        <p>Add a new client with name, phone, and email.</p>
-        <button>GO</button>
-     </div>
-    </a>
-  
-    <a href="/view_clients">
-    <div class="content">
-        <h2>View clients</h2>
-        <p>View clients with their specific transactions.</p>
-        <button>GO</button>
-    </div>
-    </a>
 
-    <a href="/analytics">
-    <div class="content">
-        <h2>Analytics</h2>
-        <p>View the analysis of the transactions made on the system.</p>
-        <button>GO</button>
+<main>
+    <!-- Desktop sidebar -->
+    <aside>
+        <h2>Treasure MS</h2>
+        <ul>
+            <li><a href="/" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li><a href="/add"><i class="fa-solid fa-user-plus"></i> New Client</a></li>
+            <li><a href="/view_clients"><i class="fa-solid fa-users"></i> Manage Clients</a></li>
+            <li><a href="/analytics"><i class="fa-solid fa-chart-line"></i> Analysis</a></li>
+        </ul>
+        <div class="sidebar-footer">&copy; 2025 Treasure MS</div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="page-content">
+
+        <div class="page-header">
+            <h1>Dashboard</h1>
+            <p>Welcome back — manage your clients and transactions below.</p>
+        </div>
+
+        <div class="cards-grid">
+
+            <a href="/add" class="card">
+                <div class="card-icon"><i class="fa-solid fa-user-plus"></i></div>
+                <div class="card-text">
+                    <h2>Add Client</h2>
+                    <p>Register a new client with name, phone, and email.</p>
+                </div>
+                <button class="card-btn"><i class="fa-solid fa-arrow-right"></i> Go</button>
+            </a>
+
+            <a href="/view_clients" class="card">
+                <div class="card-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="card-text">
+                    <h2>Manage Clients</h2>
+                    <p>View, search and manage client transactions.</p>
+                </div>
+                <button class="card-btn"><i class="fa-solid fa-arrow-right"></i> Go</button>
+            </a>
+
+            <a href="/analytics" class="card">
+                <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="card-text">
+                    <h2>Analytics</h2>
+                    <p>View charts and financial analysis of the system.</p>
+                </div>
+                <button class="card-btn"><i class="fa-solid fa-arrow-right"></i> Go</button>
+            </a>
+
+        </div>
     </div>
-    </a>
 </main>
+
+<!-- Mobile bottom nav -->
+<nav class="mobile-nav">
+    <a href="/" class="active"><i class="fa-solid fa-house"></i>Home</a>
+    <a href="/add"><i class="fa-solid fa-user-plus"></i>Add</a>
+    <a href="/view_clients"><i class="fa-solid fa-users"></i>Clients</a>
+    <a href="/analytics"><i class="fa-solid fa-chart-line"></i>Analytics</a>
+</nav>
 
 </body>
 </html>

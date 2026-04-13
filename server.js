@@ -373,7 +373,7 @@ app.get('/analytics_data', (req, res) => {
 
             (SELECT IFNULL(SUM(\`outtake\`), 0) FROM transactions) AS totalOut,
 
-            (SELECT IFNULL(SUM(\`income\`) + SUM(\`out\`), 0) FROM transactions) AS totalBalance,
+            (SELECT IFNULL(SUM(\`income\`) + SUM(\`outtake\`), 0) FROM transactions) AS totalBalance,
 
             (SELECT COUNT(*) FROM transactions) AS totalTransactions
     `;
@@ -441,6 +441,62 @@ app.get('/analytics_recent_transactions', (req, res) => {
     });
 });
 
+// ══════════════════════════════════════════════════════════════
+//  GET /analytics_chart_data
+//  Returns last 6 months of:
+//    - labels       : ["Nov 24", "Dec 24", ...]
+//    - txCounts     : number of transactions per month
+//    - inAmounts    : total income per month
+//    - outAmounts   : total outtake (absolute) per month
+// ══════════════════════════════════════════════════════════════
+app.get('/analytics_chart_data', (req, res) => {
+
+    const sql = `
+        SELECT
+            DATE_FORMAT(date, '%b %y')          AS label,
+            DATE_FORMAT(date, '%Y-%m')          AS monthKey,
+            COUNT(*)                            AS txCount,
+            IFNULL(SUM(\`income\`), 0)          AS totalIn,
+            IFNULL(ABS(SUM(\`outtake\`)), 0)    AS totalOut
+        FROM transactions
+        WHERE date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+        GROUP BY monthKey, label
+        ORDER BY monthKey ASC
+    `;
+
+    db.query(sql, (error, results) => {
+        if (error) {
+            return res.status(500).json({ message: "Database Error", error });
+        }
+
+        // If no data yet, return 6 empty months so charts render cleanly
+        if (results.length === 0) {
+            const labels     = [];
+            const txCounts   = [];
+            const inAmounts  = [];
+            const outAmounts = [];
+
+            for (let i = 5; i >= 0; i--) {
+                const d = new Date();
+                d.setMonth(d.getMonth() - i);
+                labels.push(d.toLocaleString('en', { month: 'short' }) + ' ' +
+                            String(d.getFullYear()).slice(2));
+                txCounts.push(0);
+                inAmounts.push(0);
+                outAmounts.push(0);
+            }
+
+            return res.json({ labels, txCounts, inAmounts, outAmounts });
+        }
+
+        res.json({
+            labels:     results.map(r => r.label),
+            txCounts:   results.map(r => r.txCount),
+            inAmounts:  results.map(r => parseFloat(r.totalIn)),
+            outAmounts: results.map(r => parseFloat(r.totalOut))
+        });
+    });
+});
 
 app.listen(5000,()=>{
     console.log("http://localhost:5000")

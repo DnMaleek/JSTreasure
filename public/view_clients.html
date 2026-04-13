@@ -3,580 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>View Clients | Treasure</title>
 </head>
-
 <style>
-* {
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    box-sizing: border-box;
-}
+* { font-family:'Segoe UI',sans-serif; margin:0; box-sizing:border-box; }
+body { background:linear-gradient(135deg,#eef2f6,#e3e9ef); }
 
-body {
-    background: linear-gradient(135deg, #eef2f6, #e3e9ef);
-}
-
-main {
-    display: flex;
-    gap: 2%;
-     margin-top: 20px;
-
-}
-
-.main-cont {
-    display: flex;
-    justify-content: center;
-    flex-basis: 100%;
-    padding: 20px;
-}
+main { display:flex; gap:0; margin-top:20px; min-height:100vh; }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 70%;
-    min-width: 1080px;
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 20px 25px;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+    display:flex; flex-direction:column; flex:1; min-width:0;
+    background:#fff; border-radius:14px;
+    padding:20px 25px; margin:0 20px 20px 20px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.08); overflow-x:auto;
 }
 
-.heading { 
-    margin-top: 8px;
-    margin-bottom: 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgb(218, 218, 218);
+.heading {
+    margin-top:8px; margin-bottom:25px;
+    display:flex; justify-content:space-between; align-items:center;
+    border-bottom:1px solid rgb(218,218,218);
 }
-
-.heading .head h2 {
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    font-size: 17px;
-    color: #1f2933;
-}
+.heading .head h2 { font-weight:bold; letter-spacing:0.5px; font-size:17px; color:#1f2933; }
 
 .search {
-    background: linear-gradient(135deg, #1b6ca8, #0f4c75);
-    width: 400px;
-    height: 42px;
-    border-radius: 25px;
-    padding: 2px;
-    font-size:12px;
+    background:linear-gradient(135deg,#1b6ca8,#0f4c75);
+    width:300px; max-width:100%; height:42px;
+    border-radius:25px; padding:2px; font-size:12px;
 }
-
 .search input {
-    width: 100%;
-    height: 100%;
-    border-radius: 25px;
-    outline: none;
-    border: none;
-    font-size: 15px;
-    padding-left: 15px;
+    width:100%; height:100%; border-radius:25px;
+    outline:none; border:none; font-size:15px; padding-left:15px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 10px;
-    overflow: hidden;
-    font-size: 12.5px;
-}
-
-thead {
-    background: linear-gradient(135deg, #1b6ca8, #0f4c75);
-    color: #fff;
-}
-
-thead th {
-    padding: 12px;
-    text-align: left;
-}
-
-tbody td {
-    padding: 12px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-tbody tr {
-    transition: background 0.25s;
-}
-
-tbody tr:hover {
-    background: #f1f7ff;
-}
+table { width:100%; border-collapse:collapse; border-radius:10px; overflow:hidden; font-size:12.5px; }
+thead { background:linear-gradient(135deg,#1b6ca8,#0f4c75); color:#fff; }
+thead th { padding:12px; text-align:left; }
+tbody td { padding:12px; border-bottom:1px solid #e5e7eb; }
+tbody tr { transition:background 0.25s; }
+tbody tr:hover { background:#f1f7ff; }
 
 tr button {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    color: white;
-    font-size: 13px;
-    cursor: pointer;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    padding:6px 12px; border:none; border-radius:6px;
+    color:white; font-size:13px; cursor:pointer;
+    transition:transform 0.2s, opacity 0.2s;
 }
-
-tr button:hover {
-    transform: scale(1.05);
-    opacity: 0.85;
-}
+tr button:hover { transform:scale(1.05); opacity:0.85; }
 
 aside {
-    background: linear-gradient(180deg, #0f4c75, #1b6ca8);
-    height: calc(100vh - 20px);
-    width:360px;
-    padding: 20px 0;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 4px 0 15px rgba(0,0,0,0.18);
-    position: sticky;
-    top: 0;
+    background:linear-gradient(180deg,#0f4c75,#1b6ca8);
+    height:calc(100vh - 20px); width:240px; min-width:240px;
+    padding:20px 0; display:flex; flex-direction:column;
+    box-shadow:4px 0 15px rgba(0,0,0,0.18);
+    position:sticky; top:0; flex-shrink:0;
 }
-
-aside h2 {
-    color: #ffffff;
-    text-align: center;
-    margin-bottom: 30px;
-    letter-spacing: 1px;
-    font-size: 22px;
-}
-
-aside ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-aside li {
-    margin: 6px 12px;
-}
-
+aside h2 { color:#fff; text-align:center; margin-bottom:30px; letter-spacing:1px; font-size:22px; }
+aside ul { list-style:none; padding:0; margin:0; }
+aside li { margin:6px 12px; }
 aside a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 20px;
-    color: #eaf4ff;
-    text-decoration: none;
-    font-size: 14px;
-    border-radius: 10px;
-    transition: all 0.3s ease;
+    display:flex; align-items:center; gap:12px; padding:12px 20px;
+    color:#eaf4ff; text-decoration:none; font-size:14px;
+    border-radius:10px; transition:all 0.3s ease;
 }
+aside a:hover { background:rgba(255,255,255,0.15); transform:translateX(6px); }
+aside a.active { background:#fff; color:#1b6ca8; font-weight:600; }
+.sidebar-footer { margin-top:auto; padding:15px; text-align:center; font-size:13px; color:rgba(255,255,255,0.7); }
 
-aside a:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateX(6px);
+.head { display:flex; justify-content:center; gap:8px; align-items:center; }
+.head i { color:#1b6ca8; font-size:14px; }
+
+/* popups */
+.delete-popbg, .success-popbg, .popbg {
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background:rgba(0,0,0,0.6); display:none;
+    justify-content:center; align-items:center; z-index:9999;
 }
+.popbg { backdrop-filter:blur(3px); z-index:100; }
 
-aside a.active {
-    background: #ffffff;
-    color: #1b6ca8;
-    font-weight: 600;
-}
-
-.sidebar-footer {
-    margin-top: auto;
-    padding: 15px;
-    text-align: center;
-    font-size: 13px;
-    color: rgba(255,255,255,0.7);
-}
-
-.head {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    align-items: center;
-}
-
-.head i {
-    color: #1b6ca8;
-    font-size: 14px; 
-    text-align: center;
-}
-
-.delete-popbg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6); 
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-/* Popup card styling */
 .delete-popcard, .success-popcard {
-    background: #fff;
-    padding: 50px 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    background:#fff; padding:50px 30px; border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3); max-width:400px;
+    width:90%; text-align:center; display:flex;
+    flex-direction:column; align-items:center; gap:20px;
 }
-
-/* Warning title */
-.delete-popcard h3 {
-    font-size: 14px;
-    font-weight: bold;
-    opacity: .7;
-    color: gray;
-}
-
-.success-popcard h3 {
-    font-size: 14px;
-    font-weight: bold;
-    opacity: .7;
-    color: green;
-}
-
-.success-popcard i {
-    font-size: 50px;
-    font-weight: bold;
-    color: green;
-}
-.delete-popcard .i-con {
-    font-size: 50px;
-    text-align: center;
-    color: red;
-    box-shadow: 4px 2px 20px solid black;
-}
-
-/* Buttons container */
-.delete-btn {
-    display: flex;
-    justify-content: space-around;
-    gap: 1rem;
-}
-
-/* Cancel button styling */
+.delete-popcard h3 { font-size:14px; font-weight:bold; opacity:.7; color:gray; }
+.success-popcard h3 { font-size:14px; font-weight:bold; opacity:.7; color:green; }
+.success-popcard i { font-size:50px; font-weight:bold; color:green; }
+.delete-popcard .i-con { font-size:50px; color:red; }
+.delete-btn { display:flex; justify-content:space-around; gap:1rem; }
 #cancelBtn3 {
-    background: #e2e8f0; 
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: background 0.3s;
+    background:#e2e8f0; border:none; padding:0.7rem 1.5rem;
+    border-radius:8px; cursor:pointer; font-size:1rem; font-weight:bold; transition:background 0.3s;
 }
-
-#cancelBtn3:hover {
-    border: 3px solid green;
-    background: #cad0d7;
-}
-
-/* Delete button styling */
+#cancelBtn3:hover { border:3px solid green; background:#cad0d7; }
 #deleteConfirm {
-    background: #e2e8f0;
-    color: red;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: background 0.3s, transform 0.2s;
+    background:#e2e8f0; color:red; border:none; padding:0.7rem 1.5rem;
+    border-radius:8px; cursor:pointer; font-size:1rem; font-weight:bold; transition:background 0.3s, transform 0.2s;
 }
-
-#deleteConfirm:hover {
-    border: 2px solid #9b2c2c;
-    background: rgb(241, 149, 149);
-    transform: scale(1.05);
-}
-
-.success-popbg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6); 
-    display: none; 
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
+#deleteConfirm:hover { border:2px solid #9b2c2c; background:rgb(241,149,149); transform:scale(1.05); }
 
 .table-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    padding: 12px 16px;
-    background: #f8fafc;
-    border-radius: 12px;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:20px; padding:12px 16px;
+    background:#f8fafc; border-radius:12px; box-shadow:0 6px 14px rgba(0,0,0,0.06);
 }
-
-/* Pagination buttons */
-#pagination {
-    display: flex;
-    gap: 6px;
-}
-
+#pagination { display:flex; gap:6px; }
 #pagination button {
-    min-width: 34px;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 8px;
-    background: #e2e8f0;
-    color: #1b6ca8;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.25s ease;
+    min-width:34px; padding:6px 12px; border:none; border-radius:8px;
+    background:#e2e8f0; color:#1b6ca8; font-size:13px; cursor:pointer; transition:all 0.25s;
 }
+#pagination button:hover { background:#1b6ca8; color:#fff; transform:translateY(-1px); }
+#pagination button.active { background:linear-gradient(135deg,#1b6ca8,#0f4c75); color:white; font-weight:bold; }
 
-#pagination button:hover {
-    background: #1b6ca8;
-    color: #ffffff;
-    transform: translateY(-1px);
-}
-
-#pagination button.active {
-    background: linear-gradient(135deg, #1b6ca8, #0f4c75);
-    color: white;
-    font-weight: bold;
-}
-
-/* Entries dropdown */
-.entries-select {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: #374151;
-}
-
-.entries-select label {
-    font-weight: 600;
-}
-
+.entries-select { display:flex; align-items:center; gap:8px; font-size:13px; color:#374151; }
+.entries-select label { font-weight:600; }
 .entries-select select {
-    padding: 6px 10px;
-    border-radius: 8px;
-    border: 1px solid #cbd5e1;
-    background: white;
-    font-size: 13px;
-    cursor: pointer;
-    outline: none;
-    transition: border 0.2s, box-shadow 0.2s;
+    padding:6px 10px; border-radius:8px; border:1px solid #cbd5e1;
+    background:white; font-size:13px; cursor:pointer; outline:none; transition:border 0.2s;
 }
-
-.entries-select select:hover {
-    border-color: #1b6ca8;
-}
-
-.entries-select select:focus {
-    border-color: #1b6ca8;
-    box-shadow: 0 0 0 3px rgba(27, 108, 168, 0.2);
-}
-
-/* ADD CLIENT POP STLY */
-.popbg {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(3px);
-    z-index: 100;
-}
+.entries-select select:hover, .entries-select select:focus { border-color:#1b6ca8; }
 
 .popcard {
-    background: #ffffff;
-    padding: 30px 25px;
-    border-radius: 14px;
-    width: 420px;
-    animation: pop 0.4s ease;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    background:#fff; padding:30px 25px; border-radius:14px;
+    width:420px; animation:pop 0.4s ease; box-shadow:0 20px 40px rgba(0,0,0,0.25);
 }
+@keyframes pop { from{transform:scale(0.85);opacity:0;} to{transform:scale(1);opacity:1;} }
 
-.cancelBtn {
-    display: flex;
-    justify-content: flex-end;
-}
-
-
+.cancelBtn { display:flex; justify-content:flex-end; }
 #cancelBtn {
-    height: 38px;
-    width: 38px;
-    font-size: 26px;
-    border: none;
-    background: transparent;
-    color: #dc2626;
-    cursor: pointer;
-    transition: transform 0.2s;
+    height:38px; width:38px; font-size:26px; border:none;
+    background:transparent; color:#dc2626; cursor:pointer; transition:transform 0.2s;
 }
+#cancelBtn:hover { transform:rotate(90deg) scale(1.1); }
 
-#cancelBtn:hover {
-    transform: rotate(90deg) scale(1.1);
-}
-
-.addClient {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-}
-
-.addClient h2 {
-    color: #1b6ca8;
-    margin-bottom: 10px;
-}
-
+.addClient { display:flex; flex-direction:column; align-items:center; gap:12px; }
+.addClient h2 { color:#1b6ca8; margin-bottom:10px; }
 .addClient button {
-    width: 45%;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    background: linear-gradient(135deg, #1b6ca8, #08497b);
-    color: white;
-    font-weight: 500;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+    width:45%; padding:10px; border-radius:10px; border:none;
+    background:linear-gradient(135deg,#1b6ca8,#08497b);
+    color:white; font-weight:500; cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;
 }
-
-.addClient button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(22,163,74,0.4);
-}
-
+.addClient button:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(22,163,74,0.4); }
 form input {
-    width: 100%;
-    height: 42px;
-    border-radius: 8px;
-    border: 1px solid #d1d5db;
-    padding: 0 10px;
-    text-align: center;
+    width:100%; height:42px; border-radius:8px;
+    border:1px solid #d1d5db; padding:0 10px; text-align:center;
+}
+#info { color:gray; font-weight:bold; font-size:14px; opacity:.6; margin-bottom:4px; font-style:italic; }
+
+.mobile-nav { display:none; }
+
+/* mobile client cards (replaces table rows on small screens) */
+.mobile-card-list { display:none; }
+
+.client-card {
+    background:#fff; border-radius:16px; padding:16px 18px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.07); border:1px solid #e2e8f0;
+    display:flex; align-items:center; gap:14px; margin-bottom:10px;
+}
+.client-avatar {
+    width:44px; height:44px; border-radius:50%;
+    background:linear-gradient(135deg,#1b6ca8,#0f4c75);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-weight:700; font-size:16px; flex-shrink:0;
+}
+.client-info { flex:1; min-width:0; }
+.client-info .cname { font-weight:700; font-size:14px; color:#1f2933; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.client-info .cphone { font-size:12px; color:#64748b; margin-top:2px; }
+.client-info .cemail { font-size:11px; color:#94a3b8; margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.client-actions { display:flex; flex-direction:column; gap:6px; flex-shrink:0; }
+.client-actions button { padding:6px 12px; border-radius:10px; font-size:11px; font-weight:600; }
+
+/* ── TABLET ── */
+@media (max-width:1024px){ aside{ width:200px; min-width:200px; } }
+
+/* ── MOBILE ── */
+@media (max-width:768px){
+    body { padding-bottom:72px; background:#eef2f6; }
+    main { flex-direction:column; margin-top:0; }
+    aside { display:none; }
+
+    .container {
+        margin:0; border-radius:0;
+        padding:0 0 16px 0;
+        box-shadow:none; background:transparent;
+        overflow-x:visible;
+    }
+
+    /* mobile top bar */
+    .mobile-topbar {
+        background:linear-gradient(135deg,#0f4c75,#1b6ca8);
+        padding:20px 16px 20px;
+        border-radius:0 0 24px 24px;
+        box-shadow:0 6px 20px rgba(15,76,117,0.3);
+        margin-bottom:16px;
+    }
+    .mobile-topbar-row {
+        display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;
+    }
+    .mobile-topbar h2 { color:#fff; font-size:20px; font-weight:700; }
+    .mobile-topbar .add-btn-mobile {
+        background:rgba(255,255,255,0.2); border:1.5px solid rgba(255,255,255,0.4);
+        color:#fff; border-radius:12px; padding:8px 16px;
+        font-size:13px; font-weight:600; cursor:pointer;
+        display:flex; align-items:center; gap:6px;
+    }
+
+    /* mobile search */
+    .mobile-search {
+        background:rgba(255,255,255,0.15); border-radius:12px;
+        padding:2px; border:1px solid rgba(255,255,255,0.2);
+    }
+    .mobile-search input {
+        width:100%; background:transparent; border:none; outline:none;
+        color:#fff; font-size:14px; padding:10px 14px;
+    }
+    .mobile-search input::placeholder { color:rgba(255,255,255,0.6); }
+
+    /* hide desktop heading & search & table */
+    .heading { display:none; }
+    table { display:none; }
+    .table-controls { display:none; }
+
+    /* show cards */
+    .mobile-card-list {
+        display:block; padding:0 16px;
+    }
+
+    /* pagination mobile */
+    .mobile-pagination {
+        display:flex; justify-content:center; align-items:center;
+        gap:10px; padding:16px 16px 0;
+    }
+    .mobile-pagination button {
+        background:linear-gradient(135deg,#1b6ca8,#0f4c75);
+        color:#fff; border:none; border-radius:10px;
+        padding:8px 18px; font-size:13px; cursor:pointer;
+    }
+    .mobile-pagination span { font-size:13px; color:#555; font-weight:600; }
+
+    /* popcard mobile */
+    .popcard { width:92vw; padding:24px 20px; border-radius:20px; }
+    .addClient button { width:100%; }
+
+    /* BOTTOM NAV */
+    .mobile-nav {
+        display:flex; position:fixed; bottom:0; left:0; right:0; z-index:9000;
+        background:linear-gradient(180deg,#0f4c75,#0a3a5c);
+        border-top:1px solid rgba(255,255,255,0.08);
+        box-shadow:0 -4px 24px rgba(0,0,0,0.35);
+        padding:6px 0 env(safe-area-inset-bottom,8px);
+        justify-content:space-around; align-items:center;
+    }
+    .mobile-nav a {
+        display:flex; flex-direction:column; align-items:center; gap:3px;
+        color:rgba(255,255,255,0.5); text-decoration:none;
+        font-size:10px; font-weight:500; padding:6px 12px;
+        border-radius:12px; transition:all 0.2s;
+        min-width:60px; text-align:center;
+    }
+    .mobile-nav a i { font-size:20px; transition:transform 0.2s; }
+    .mobile-nav a.active { color:#fff; background:rgba(255,255,255,0.14); }
+    .mobile-nav a.active i { transform:translateY(-2px); filter:drop-shadow(0 2px 8px rgba(255,255,255,0.4)); }
 }
 
-#info {
-    color: gray;
-    font-weight: bold;
-    font-size: 14px;
-    opacity: .6;
-    margin-bottom: 4px;
-    font-style: italic;
+@media (max-width:480px){
+    .client-card { padding:14px; gap:10px; }
+    .client-avatar { width:38px; height:38px; font-size:14px; }
 }
 </style>
 
 <body>
-    <main>
-       <aside>
-            <h2>Treasure MS</h2>
-            <ul>
-                <li><a href="/" class="active">Home</a></li>
-                <li><a href="/add">New Client</a></li>
-                <li><a href="/view_clients">Manage Clients</a></li>
-                <li><a href="/analytics">Analysis</a></li>
-            </ul>
-            <div class="sidebar-footer">
-                &copy; 2025 Treasure MS
+<main>
+    <aside>
+        <h2>Treasure MS</h2>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/add">New Client</a></li>
+            <li><a href="/view_clients" class="active">Manage Clients</a></li>
+            <li><a href="/analytics">Analysis</a></li>
+        </ul>
+        <div class="sidebar-footer">&copy; 2025 Treasure MS</div>
+    </aside>
+
+    <div class="container">
+        <!-- Mobile top bar (hidden on desktop) -->
+        <div class="mobile-topbar" style="display:none;" id="mobileTopbar">
+            <div class="mobile-topbar-row">
+                <h2><i class="fa-solid fa-users" style="margin-right:8px;opacity:0.8;"></i>Clients</h2>
+                <button class="add-btn-mobile" id="addClientMobile">
+                    <i class="fa-solid fa-plus"></i> Add
+                </button>
             </div>
-        </aside>
-   <div class="container">
-    <div class="heading">
-        <div class="head" id="addClient">
-            <h2 style="color: #1b6ca8; cursor: pointer;">Manage Clients</h2>
-            <i class="fa-solid fa-circle-plus"></i>
+            <div class="mobile-search">
+                <input type="text" id="searchMobile" placeholder="Search clients...">
+            </div>
         </div>
-        <div class="search">
-            <input type="text" name="" id="search" placeholder="Search clients here....">
+
+        <!-- Desktop heading -->
+        <div class="heading">
+            <div class="head" id="addClient">
+                <h2 style="color:#1b6ca8;cursor:pointer;">Manage Clients</h2>
+                <i class="fa-solid fa-circle-plus"></i>
+            </div>
+            <div class="search">
+                <input type="text" id="search" placeholder="Search clients here....">
+            </div>
+        </div>
+
+        <!-- Desktop table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>SN</th><th>Name</th><th>Phone</th><th>Email</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableData"></tbody>
+        </table>
+
+        <!-- Desktop pagination -->
+        <div class="table-controls">
+            <div id="pagination"></div>
+            <div class="entries-select">
+                <label for="limit">Entries per page</label>
+                <select id="limit">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Mobile card list -->
+        <div class="mobile-card-list" id="mobileCardList"></div>
+        <div class="mobile-pagination" id="mobilePagination" style="display:none;"></div>
+    </div>
+</main>
+
+<!-- DELETE POPUP -->
+<div class="delete-popbg" id="deletePop">
+    <div class="delete-popcard">
+        <i class="fa-solid fa-trash i-con"></i>
+        <h3>Careful, This action Can't be Undone!</h3>
+        <div class="delete-btn">
+            <button id="cancelBtn3">Cancel</button>
+            <button id="deleteConfirm">Delete</button>
         </div>
     </div>
-     
-    <table>
-        <thead>
-            <tr>
-                <th>SN</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="tableData">
-        </tbody>
-    </table>
-    <div class="table-controls">
-        <div id="pagination"></div>
+</div>
 
-        <div class="entries-select">
-            <label for="limit">Entries per page</label>
-            <select id="limit">
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-            </select>
-        </div>
+<div class="success-popbg" id="successPop">
+    <div class="success-popcard">
+        <i class="fa-solid fa-circle-check"></i>
+        <h3 id="msg"></h3>
     </div>
+</div>
 
-
-   </div>
-    </main>
-
-    <!--VERIFICATION POPUP ON DELETE-->
-        <div class="delete-popbg" id="deletePop">
-            <div class="delete-popcard">
-                <i class="fa-solid fa-trash i-con"></i>
-                <h3>
-                    Careful, This action Can't be Undone!
-                </h3>
-                <div class="delete-btn">
-                    <button id="cancelBtn3">
-                        Cancel
-                    </button>
-                    <button id="deleteConfirm">Delete</button>
-                </div>
-            </div>
+<!-- ADD CLIENT POP -->
+<div class="popbg" id="popbg">
+    <div class="popcard">
+        <div class="cancelBtn">
+            <button id="cancelBtn"><i class="fa-regular fa-circle-xmark fa-shake"></i></button>
         </div>
-        
-        <div class="success-popbg" id="successPop">
-            <div class="success-popcard">
-                <i class="fa-solid fa-circle-check"></i>
-                <h3 id="msg"></h3>
-            </div>
-        </div>
+        <form class="addClient" id="addClientForm">
+            <h2>Add details of your client here</h2>
+            <h3 id="info">Add properly, Never repeat.</h3>
+            <input type="text" name="Name" id="Name" placeholder="Name">
+            <input type="email" name="Email" id="Email" placeholder="Email">
+            <input type="text" name="Tel" id="Tel" placeholder="Phone">
+            <button type="submit">Add</button>
+        </form>
+    </div>
+</div>
 
-    <!--ADD CLIENT POP-->
-       <div class="popbg" id="popbg">
+<nav class="mobile-nav">
+    <a href="/"><i class="fa-solid fa-house"></i>Home</a>
+    <a href="/add"><i class="fa-solid fa-user-plus"></i>Add</a>
+    <a href="/view_clients" class="active"><i class="fa-solid fa-users"></i>Clients</a>
+    <a href="/analytics"><i class="fa-solid fa-chart-line"></i>Analytics</a>
+</nav>
 
-            <div class="popcard">
-                <div class="cancelBtn" >
-                    <button id="cancelBtn">
-                       <i class="fa-regular fa-circle-xmark fa-shake"></i>
-                    </button>
-                </div>
+<script>
+// Show mobile topbar on small screens
+function checkMobile(){
+    const isMobile = window.innerWidth <= 768;
+    document.getElementById('mobileTopbar').style.display = isMobile ? 'block' : 'none';
+    document.getElementById('mobilePagination').style.display = isMobile ? 'flex' : 'none';
+}
+checkMobile();
+window.addEventListener('resize', checkMobile);
 
-                <form class="addClient" id="addClientForm">
-                    <h2>Add details of your client here</h2>
-                        <h3 id="info">Add properly, Never repeat.</h3>
-                    <input type="text" name="Name" id="Name" placeholder="Name">
-                    <input type="email" name="Email" id="Email" placeholder="Email">
-                    <input type="text" name="Tel" id="Tel" placeholder="Phone">
-                    <button type="submit">Add</button>
-                </form>
+// Sync mobile search to main search
+document.getElementById('searchMobile').addEventListener('input', function(){
+    document.getElementById('search').value = this.value;
+    document.getElementById('search').dispatchEvent(new Event('input'));
+});
 
-            </div>
-
-        </div>
-
-    <!-- SUCCESS POPUP -->
-
+// Mobile add button opens same popup
+document.getElementById('addClientMobile').addEventListener('click', function(){
+    document.getElementById('popbg').style.display = 'flex';
+});
+</script>
 <script src="view_clients.js"></script>
-
 </body>
 </html>

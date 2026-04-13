@@ -4,339 +4,243 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add_Client | Treasure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        * {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            box-sizing: border-box;
-        }
+        * { font-family:'Segoe UI',sans-serif; margin:0; box-sizing:border-box; }
+        body { background:linear-gradient(135deg,#eef2f6,#e3e9ef); }
 
-        body {
-            background: linear-gradient(135deg, #eef2f6, #e3e9ef);
-        }
-
-        main {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
-        }
+        main{ display:flex; min-height:100vh; margin-top: 20px; gap: 0; }
 
         aside {
-            background: linear-gradient(180deg, #0f4c75, #1b6ca8);
-            height: calc(100vh - 20px);
-            width: 360px;
-            padding: 20px 0;
+            background:linear-gradient(180deg,#0f4c75,#1b6ca8);
+            height:calc(100vh - 20px); width:240px; min-width:240px;
+            padding:20px 0; display:flex; flex-direction:column;
+            box-shadow:4px 0 15px rgba(0,0,0,0.18);
+            position:sticky; top:0; flex-shrink:0;
+        }
+        aside h2 { color:#fff; text-align:center; margin-bottom:30px; letter-spacing:1px; font-size:22px; }
+        aside ul { list-style:none; padding:0; margin:0; }
+        aside li { margin:6px 12px; }
+        aside a {
+            display:flex; align-items:center; gap:12px; padding:12px 20px;
+            color:#eaf4ff; text-decoration:none; font-size:14px;
+            border-radius:10px; transition:all 0.3s ease;
+        }
+        aside a:hover { background:rgba(255,255,255,0.15); transform:translateX(6px); }
+        aside a.active { background:#fff; color:#1b6ca8; font-weight:600; }
+        .sidebar-footer { margin-top:auto; padding:15px; text-align:center; font-size:13px; color:rgba(255,255,255,0.7); }
+
+        .main-container {
+            display:flex; flex-direction:column; flex:1; min-width:0;
+            background:#fff; border-radius:14px;
+            padding:20px 25px; margin:0 20px 20px 20px;
+            box-shadow:0 15px 30px rgba(0,0,0,0.08); overflow-x:auto;
+            justify-content: space-evenly;
+        }
+        .mobile-topbar{
             display: flex;
             flex-direction: column;
-            box-shadow: 4px 0 15px rgba(0,0,0,0.18);
-            position: sticky;
-            top: 0;
-        }
-
-        aside h2 {
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 30px;
-            letter-spacing: 1px;
-            font-size: 22px;
-        }
-
-        aside ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        aside li {
-            margin: 6px 12px;
-        }
-
-        aside a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            color: #eaf4ff;
-            text-decoration: none;
-            font-size: 14px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        aside a:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateX(6px);
-        }
-
-        aside a.active {
-            background: #ffffff;
-            color: #1b6ca8;
-            font-weight: 600;
-        }
-
-        .sidebar-footer {
-            margin-top: auto;
-            padding: 15px;
-            text-align: center;
-            font-size: 13px;
-            color: rgba(255,255,255,0.7);
-        }
-        .main-container {
-            display: flex;
-            gap: 2%;
-            width: 100%;
-/*             max-width: 1200px;
- */            margin: 0 auto;              /* center horizontally */
-            background: #ffffff;
-            border-radius: 14px;
-            padding: 30px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-
-            align-items: center;         /* vertical centering */
-/*             justify-content: center;
- */        }
-
-        .container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
             align-items: center;
         }
 
+        .container {  display:flex; justify-content:center; align-items:center; }
 
         form {
-            border: 1px solid rgb(209, 209, 209);
-            box-shadow: 1px 5px 15px rgba(167, 167, 167);
-            display: flex;
-            flex-direction: column;
-            padding: 50px;  
-            gap: 15px;
-            width: 400px;
-            border-radius: 15px;
-            transition: all .3s;
+            border:1px solid rgb(209,209,209);
+            box-shadow:0 10px 25px rgba(167,167,167,0.4);
+            display:flex; flex-direction:column;
+            padding:40px; gap:18px; border-radius:12px;
+            transition:all .3s; width:100%; max-width:600px;
         }
+        form:hover { transform:scale(1.01); }
 
-        form:hover {
-            transform: scale(1.01);
-        }
-
-        h2 {
-            margin-bottom: 10px;
-            color:#1b6ca8;
-            text-align: center;
-        }
+        h2 { margin-bottom:10px; color:#1b6ca8; text-align:center; }
 
         .d1 {
-            background-color: green;
-            width: 100%;
-            height: 40px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: center;
-            border-bottom-left-radius: 50px;
-            border-top-right-radius: 50px;
+            background-color:green; width:100%; height:40px; margin-bottom:8px;
+            display:flex; justify-content:center;
+            border-bottom-left-radius:50px; border-top-right-radius:50px;
         }
-
         .d2 {
-            background-color: hsl(205, 21%, 89%);
-            height: 40px;
-            padding: 0 15px;
-            display: flex;
-            align-items: center;
-            border-bottom-left-radius: 60px;
-            border-top-right-radius: 60px;
-            position: absolute;
-            z-index: 1;
+            background-color:hsl(205,21%,89%); height:40px; padding:0 15px;
+            display:flex; align-items:center;
+            border-bottom-left-radius:60px; border-top-right-radius:60px;
+            position:absolute; z-index:1;
         }
-        .d2 p {
-            font-size: 14px;
-            font-weight: 800;
-            color: #1b6ca8;
-            opacity: .6;
-            font-style: italic;
-        }
+        .d2 p { font-size:14px; font-weight:800; color:#1b6ca8; opacity:.6; font-style:italic; }
 
         input {
-             width: 100%;
-             height: 40px;
-            font-size: 15px; 
-             padding-inline:10px ;
-             outline: none;
-             border: none;
-             background-color: white;
-             border-bottom: 1px solid gray;
-              margin-bottom: 10px;
-             }
-
-        .btn {
-            width: 100%;
-            display: flex;
-            justify-content: flex-end;
+            width:100%; height:45px; font-size:15px; padding:0 12px;
+            border-radius:6px; outline:none; border:1px solid #d0d7de;
+            background-color:white; border-bottom:1px solid gray;
+            margin-bottom:10px; transition:0.2s;
         }
+        input:focus { border-color:#1b6ca8; box-shadow:0 0 0 2px rgba(27,108,168,0.15); }
 
+        .btn { width:100%; display:flex; justify-content:flex-end; }
         button {
-            width: 28%;
-            padding: 5px 12px;
-            height: 40px;
-            font-size: 14px;
-            border: none;
-            border-radius: 8px;
-            color: gainsboro;
-            background-color: rgb(17, 90, 126);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            width:120px; padding:5px 12px; height:40px; font-size:14px;
+            border:none; border-radius:8px; color:gainsboro;
+            background-color:rgb(17,90,126); cursor:pointer; transition:all 0.3s ease;
+        }
+        button:hover { transform:translateY(-2px); box-shadow:0 6px 15px rgba(8,68,99,0.3); }
+
+        #msg { font-size:16px; color:green; text-align:center; margin-top:10px; }
+
+        .mobile-nav { display:none; }
+
+        /* ── TABLET ── */
+        @media (max-width:1000px){
+            .main-container{ grid-template-columns:1fr; gap:24px; }
+            .container{ justify-content:flex-start; }
+            form{ width:100%; max-width:100%; }
+            .informations{ max-width:100%; }
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(8, 68, 99, 0.3);
-        }
+        /* ── MOBILE ── */
+        @media (max-width:768px){
+            body { padding-bottom:72px; background:#eef2f6; }
 
-        #msg {
-            font-size: 16px;
-            color: green;
-            text-align: center;
-            margin-top: 10px;
-        }
+            aside { display:none; }
 
-        @media(max-width: 900px) {
-            .main-container {
-                flex-direction: column;
-                gap: 20px;
+            main {
+                flex-direction:column;
+                margin-top: 0;
+                min-height:unset;
             }
 
-            .informations,
+            .main-container {
+                display:flex; flex-direction:column;
+                padding:0; margin:0;
+                background:transparent; border-radius:0;
+                box-shadow:none; gap:0;
+            }
+
+            /* Mobile top header bar */
+            .mobile-topbar {
+                background:linear-gradient(135deg,#0f4c75,#1b6ca8);
+                padding:20px 20px 24px;
+                border-radius:0 0 24px 24px;
+                box-shadow:0 6px 20px rgba(15,76,117,0.3);
+                margin-bottom:20px;
+            }
+            .mobile-topbar h2 {
+                color:#fff; font-size:20px; text-align:left;
+                margin-bottom:4px; font-weight:700;
+            }
+            .mobile-topbar p { color:rgba(255,255,255,0.7); font-size:13px; }
+
             .container {
-                width: 100%;
+                padding:0 16px;
+                justify-content:stretch;
             }
 
             form {
-                width: 100%;
+                padding:24px 20px; gap:14px; border-radius:18px;
+                max-width:100%;
+                box-shadow:0 4px 20px rgba(0,0,0,0.1);
+                border:1px solid #e2e8f0;
             }
+            form:hover { transform:none; }
+
+            form h2 { display:none; } /* title shown in topbar */
+
+            .d1 { display:none; }
+            .d2 { display:none; }
+
+            input {
+                height:48px; font-size:15px;
+                border-radius:12px; margin-bottom:0;
+                border:1.5px solid #d0d7de;
+            }
+            input:focus { border-color:#1b6ca8; box-shadow:0 0 0 3px rgba(27,108,168,0.15); }
+
+            .btn { justify-content:stretch; }
+            button { width:100%; height:48px; border-radius:14px; font-size:15px; font-weight:600; }
+
+            /* BOTTOM NAV */
+            .mobile-nav {
+                display:flex;
+                position:fixed; bottom:0; left:0; right:0; z-index:9000;
+                background:linear-gradient(180deg,#0f4c75,#0a3a5c);
+                border-top:1px solid rgba(255,255,255,0.08);
+                box-shadow:0 -4px 24px rgba(0,0,0,0.35);
+                padding:6px 0 env(safe-area-inset-bottom,8px);
+                justify-content:space-around; align-items:center;
+            }
+            .mobile-nav a {
+                display:flex; flex-direction:column; align-items:center; gap:3px;
+                color:rgba(255,255,255,0.5); text-decoration:none;
+                font-size:10px; font-weight:500; padding:6px 12px;
+                border-radius:12px; transition:all 0.2s;
+                min-width:60px; text-align:center;
+            }
+            .mobile-nav a i { font-size:20px; transition:transform 0.2s; }
+            .mobile-nav a.active { color:#fff; background:rgba(255,255,255,0.14); }
+            .mobile-nav a.active i { transform:translateY(-2px); filter:drop-shadow(0 2px 8px rgba(255,255,255,0.4)); }
         }
-
-        .informations {
-            background: #f8fafc;
-            border-left: 5px solid #1b6ca8;
-            padding: 25px 30px;
-            border-radius: 12px;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .informations p {
-            font-size: 15.5px;
-            margin-bottom: 15px;
-            color: #444;
-        }
-
-        .informations ol {
-            padding-left: 20px;
-        }
-
-        .informations ol > li {
-            margin-bottom: 12px;
-            font-size: 14px;
-        }
-
-        .informations ul {
-            margin-top: 8px;
-            padding-left: 20px;
-        }
-
-        .informations ul li {
-            list-style-type: disc;
-            font-size: 12.5px;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 6px;
-        }
-
-        /* Highlight format examples */
-        .informations ul li::marker {
-            color: #1b6ca8;
-        }
-
-        /* Optional emphasis */
-        .informations ol > li strong {
-            color: #1b6ca8;
-        }
-
-
     </style>
 </head>
 <body>
-    <main>
-        <!-- Sidebar -->
-        <aside>
-            <h2>Treasure MS</h2>
-            <ul>
-                <li><a href="/" class="active">Home</a></li>
-                <li><a href="/add">New Client</a></li>
-                <li><a href="/view_clients">Manage Clients</a></li>
-                <li><a href="/analytics">Analysis</a></li>
-            </ul>
-            <div class="sidebar-footer">
-                &copy; 2025 Treasure MS
-            </div>
-        </aside>
+<main>
+    <aside>
+        <h2>Treasure MS</h2>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/add" class="active">New Client</a></li>
+            <li><a href="/view_clients">Manage Clients</a></li>
+            <li><a href="/analytics">Analysis</a></li>
+        </ul>
+        <div class="sidebar-footer">&copy; 2025 Treasure MS</div>
+    </aside>
 
-        <!-- Main Form Container -->
-        <div class="main-container">
+    <div class="main-container">
+        <!-- Mobile-only top header -->
+        
+            <div class="mobile-topbar">
+                <h2><i class="fa-solid fa-user-plus" style="margin-right:8px;"></i>Add Client</h2>
+                <p>Fill in your client's details below</p>
+            </div>
+
             <div class="container">
                 <form id="formData">
                     <h2>Add Client</h2>
-                    <div class="d1">
-                        <div class="d2">
-                            <p>Add details of your client here</p>
-                        </div>
-                    </div> 
-                    <input type="text" name="Name" id="Name" placeholder="Name">
-                    <input type="email" name="Email" id="Email" placeholder="Email">
-                    <input type="text" name="Tel" id="Tel" placeholder="Phone">
-
-                    <div class="btn">
-                        <button type="submit">Add</button>
-                    </div>
-
+                    <div class="d1"><div class="d2"><p>Add details of your client here</p></div></div>
+                    <input type="text" name="Name" id="Name" placeholder="Full Name">
+                    <input type="email" name="Email" id="Email" placeholder="Email address">
+                    <input type="text" name="Tel" id="Tel" placeholder="Phone (+255 xxx xxx xxx)">
+                    <div class="btn"><button type="submit">Add Client</button></div>
                     <p id="msg"></p>
                 </form>
-            </div>
-            <div class="informations">
-                <h3>Simple Informations</h3>
-                <p>Take these informations into actions for no disturbance letter.</p>
-                <ol>
-                    <li>Add Client valid details for sequrity purpose.</li>
-                    <li>Make sure that you add all deails in proper format.
-                        <ul>
-                            <li>Phone Number +255 xxx xxx xxx</li>
-                            <li>Email email@example.com</li>
-                            <li>Name that does not contain special characters or numbers.</li>
-                        </ul>
-                    </li>
-                    <li>For any problems in Informations, make sure to contact Client immediately.</li>
-                </ol>
-            </div>
-    </main>
+            </div>   
+         
 
-    <script>
-        document.getElementById('formData').addEventListener('submit', async(e)=>{
-            e.preventDefault();
+       
+    </div>
+</main>
 
-            const name=document.getElementById('Name').value.trim();
-            const email=document.getElementById('Email').value.trim();
-            const tel=document.getElementById('Tel').value.trim();
-            const msg=document.getElementById('msg');
+<nav class="mobile-nav">
+    <a href="/"><i class="fa-solid fa-house"></i>Home</a>
+    <a href="/add" class="active"><i class="fa-solid fa-user-plus"></i>Add</a>
+    <a href="/view_clients"><i class="fa-solid fa-users"></i>Clients</a>
+    <a href="/analytics"><i class="fa-solid fa-chart-line"></i>Analytics</a>
+</nav>
 
-            const res = await fetch('/add', {
-                method: "POST",
-                headers: { "Content-Type":"application/json" },
-                body: JSON.stringify({ Name:name, Email:email, Tel:tel })
-            });
-
-            const data = await res.json();
-            msg.innerText = data.message;
+<script>
+    document.getElementById('formData').addEventListener('submit', async(e)=>{
+        e.preventDefault();
+        const name=document.getElementById('Name').value.trim();
+        const email=document.getElementById('Email').value.trim();
+        const tel=document.getElementById('Tel').value.trim();
+        const msg=document.getElementById('msg');
+        const res = await fetch('/add', {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({Name:name,Email:email,Tel:tel})
         });
-    </script>
+        const data = await res.json();
+        msg.innerText = data.message;
+    });
+</script>
 </body>
 </html>

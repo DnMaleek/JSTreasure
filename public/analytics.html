@@ -493,8 +493,8 @@ function loadRecentTransactions() {
             list.innerHTML = '';
             if (!transactions.length) { list.innerHTML = '<li>No recent transactions</li>'; return; }
             transactions.forEach(tx => {
-                const isIn   = tx.in > 0;
-                const amount = isIn ? tx.in : Math.abs(tx.out);
+                const isIn   = tx.income > 0;
+                const amount = isIn ? tx.income : Math.abs(tx.outtake);
                 const color  = isIn ? '#27ae60' : '#e74c3c';
                 list.innerHTML += `
                     <li>

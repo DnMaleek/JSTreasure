@@ -421,8 +421,8 @@ app.get('/analytics_recent_transactions', (req, res) => {
         SELECT 
             t.id,
             t.client_id,
-            t.\`income\`,
-            t.\`outtake\`,
+            t.income,
+            t.outtake,
             t.description,
             t.date,
             c.Name AS clientName

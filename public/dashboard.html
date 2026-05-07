@@ -279,5 +279,48 @@
     <a href="/analytics"><i class="fa-solid fa-chart-line"></i>Analytics</a>
 </nav>
 
+<script>
+
+const token = localStorage.getItem('token');
+
+if (!token) {
+
+    // no token
+    window.location.href = '/';
+
+} else {
+
+    fetch('/verify', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    .then(res => {
+
+        if (!res.ok) {
+            throw new Error("Invalid token");
+        }
+
+        return res.json();
+
+    })
+    .then(data => {
+
+        console.log("Authenticated");
+
+    })
+    .catch(err => {
+
+        localStorage.removeItem('token');
+
+        window.location.href = '/';
+
+    });
+
+}
+
+
+</script>
+
 </body>
 </html>

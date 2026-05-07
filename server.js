@@ -40,7 +40,7 @@ const db = mysql.createConnection(
 
 //Routes
 app.get('/', (req,res) =>{
-    res.sendFile(path.join(__dirname,'public','login.html'))
+    res.sendFile(path.join(__dirname,'public','index.html'))
 })
 
 //LOGIN and REGISTER with jwt token implementation PLUS encryption
@@ -103,6 +103,13 @@ function authMiddleware(req ,res ,next) {
     }
 }
 
+app.get('/verify', authMiddleware, (req, res) => {
+    res.status(200).json({
+        message: "Authorized",
+        user: req.user
+    });
+});
+
 app.post ('/login',async (req, res) => {
     const {email, password} = req.body;
 
@@ -160,7 +167,7 @@ app.post("/logout", (req, res) =>{
     res.status(200).json({message:"Logout sucessfully"})
 })
 
-app.get('/dashboard', authMiddleware, (req, res) => {
+app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'dashboard.html'))
 })
 

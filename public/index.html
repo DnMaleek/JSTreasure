@@ -100,21 +100,10 @@ document.getElementById("form").addEventListener("submit", async (e) => {
     // SAVE TOKEN
     localStorage.setItem("token", data.token);
 
-    // GET TOKEN
-    const token = localStorage.getItem("token");
+    if (loginRes.ok) {
+        window.location.href = "/dashboard";
+    }
 
-    console.log("TOKEN:", token);
-
-    // PROTECTED REQUEST
-    const res = await fetch("/add", {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    });
-
-
-    console.log(result);
 });
 </script>
 </body>

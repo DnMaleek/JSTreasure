@@ -3,281 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Treasure</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        * { box-sizing:border-box; font-family:'Segoe UI',sans-serif; margin:0; padding:0; }
-
-        body { background:linear-gradient(135deg,#eef2f6,#e3e9ef); min-height:100vh; }
-
-        /* ══════════════════════════════════
-           DESKTOP LAYOUT
-        ══════════════════════════════════ */
-        main { display:flex; gap:0; min-height:100vh; margin-top: 20px; }
-
-        /* ── SIDEBAR ── */
-        aside {
-            background:linear-gradient(180deg,#0f4c75,#1b6ca8);
-            height:100vh; width:240px; min-width:240px;
-            padding:30px 15px;
-            display:flex; flex-direction:column;
-            box-shadow:4px 0 15px rgba(0,0,0,0.15);
-            position:sticky; top:0; flex-shrink:0;
-        }
-        aside h2 {
-            color:#fff; text-align:center; margin-bottom:30px;
-            letter-spacing:1px; font-size:22px;
-        }
-        aside ul { list-style:none; padding:0; margin:0; }
-        aside li { margin:8px 0; }
-        aside a {
-            display:flex; align-items:center; gap:12px; padding:10px 15px;
-            color:#eaf4ff; text-decoration:none; font-size:14px;
-            border-radius:6px; transition:all 0.3s ease;
-        }
-        aside a:hover { background:rgba(255,255,255,0.15); transform:translateX(6px); }
-        aside a.active { background:#fff; color:#1b6ca8; font-weight:600; }
-        .sidebar-footer {
-            margin-top:auto; padding:15px; text-align:center;
-            font-size:13px; color:rgba(255,255,255,0.7);
-        }
-
-        /* ── CONTENT AREA ── */
-        .page-content {
-            flex:1; min-width:0;
-            display:flex; flex-direction:column;
-            padding:40px;
-        }
-
-        /* ── PAGE HEADER ── */
-        .page-header { margin-bottom:32px; }
-        .page-header h1 {
-            font-size:26px; font-weight:800; color:#1b6ca8;
-            letter-spacing:0.5px; margin-bottom:6px;
-        }
-        .page-header p { color:#64748b; font-size:14px; }
-
-        /* ── CARDS GRID ── */
-        .cards-grid {
-            display:grid;
-            grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-            gap:24px;
-            max-width:900px;
-        }
-
-        .card {
-            background:#fff; border-radius:16px;
-            padding:32px 28px;
-            box-shadow:0 4px 20px rgba(0,0,0,0.07);
-            border:1px solid #e2e8f0;
-            display:flex; flex-direction:column;
-            align-items:flex-start; gap:14px;
-            text-decoration:none; color:inherit;
-            transition:all 0.3s ease;
-            position:relative; overflow:hidden;
-        }
-        .card::before {
-            content:''; position:absolute;
-            right:-20px; bottom:-20px;
-            width:100px; height:100px;
-            border-radius:50%;
-            background:rgba(27,108,168,0.06);
-            transition:transform 0.3s ease;
-        }
-        .card:hover {
-            transform:translateY(-6px);
-            box-shadow:0 12px 32px rgba(27,108,168,0.15);
-            border-color:#b3d0e8;
-        }
-        .card:hover::before { transform:scale(1.4); }
-
-        .card-icon {
-            width:50px; height:50px; border-radius:14px;
-            background:linear-gradient(135deg,#1b6ca8,#0f4c75);
-            display:flex; align-items:center; justify-content:center;
-            color:#fff; font-size:20px;
-            box-shadow:0 4px 12px rgba(27,108,168,0.3);
-        }
-
-        .card-text { flex:1; }
-        .card h2 { font-size:17px; font-weight:700; color:#1f2933; margin-bottom:6px; }
-        .card p  { font-size:13px; color:#64748b; line-height:1.5; }
-
-        .card-btn {
-            display:inline-flex; align-items:center; gap:8px;
-            padding:9px 20px; border-radius:10px; border:none;
-            background:linear-gradient(135deg,#1b6ca8,#0f4c75);
-            color:#fff; font-size:13px; font-weight:600;
-            cursor:pointer; transition:all 0.3s ease;
-            box-shadow:0 4px 12px rgba(27,108,168,0.25);
-        }
-        .card-btn:hover {
-            transform:translateY(-2px);
-            box-shadow:0 8px 20px rgba(27,108,168,0.35);
-        }
-
-        /* hide mobile-only elements on desktop */
-        #mobileHeader { display:none; }
-        .intro        { display:none; }
-        .mobile-nav   { display:none; }
-
-        /* ══════════════════════════════════
-           MOBILE
-        ══════════════════════════════════ */
-        @media (max-width:768px) {
-            body { background:#eef2f6; padding-bottom:72px; }
-
-            main { flex-direction:column; min-height:unset; }
-            aside { display:none; }
-
-            .page-content { padding:0; }
-            .page-header  { display:none; }
-
-            #mobileHeader {
-                display:block;
-                background:linear-gradient(135deg,#0f4c75,#1b6ca8);
-                padding:24px 20px 18px;
-                border-radius:0 0 24px 24px;
-                box-shadow:0 6px 20px rgba(15,76,117,0.35);
-            }
-            #mobileHeader h1 {
-                color:#fff; font-size:21px; letter-spacing:1.5px;
-                font-weight:800; text-align:center;
-            }
-
-            .intro {
-                display:flex; justify-content:center;
-                margin-top:16px; padding:0 20px;
-            }
-            .intro p { color:white; font-size:13px; }
-
-            .cards-grid {
-                display:flex; flex-direction:column;
-                gap:10px; padding:16px 16px 0;
-                max-width:100%;
-            }
-
-            .card {
-                flex-direction:row; align-items:center;
-                padding:16px 18px; border-radius:18px; gap:0;
-                box-shadow:0 2px 14px rgba(0,0,0,0.07);
-            }
-            .card::before { display:none; }
-            .card:hover { transform:translateY(-2px); }
-
-            .card-icon {
-                width:40px; height:40px; border-radius:12px;
-                font-size:17px; margin-right:14px; flex-shrink:0;
-            }
-
-            .card-text { flex:1; min-width:0; }
-            .card h2 { font-size:14px; margin-bottom:2px; }
-            .card p   { font-size:12px; }
-
-            .card-btn {
-                margin-left:10px; flex-shrink:0;
-                padding:9px 14px; font-size:12px;
-                box-shadow:none;
-            }
-            .card-btn i { display:none; }
-
-            /* BOTTOM NAV */
-            .mobile-nav {
-                display:flex; position:fixed; bottom:0; left:0; right:0; z-index:9000;
-                background:linear-gradient(180deg,#0f4c75,#0a3a5c);
-                border-top:1px solid rgba(255,255,255,0.08);
-                box-shadow:0 -4px 24px rgba(0,0,0,0.35);
-                padding:6px 0 env(safe-area-inset-bottom,8px);
-                justify-content:space-around; align-items:center;
-            }
-            .mobile-nav a {
-                display:flex; flex-direction:column; align-items:center; gap:3px;
-                color:rgba(255,255,255,0.5); text-decoration:none;
-                font-size:10px; font-weight:500; padding:6px 12px;
-                border-radius:12px; transition:all 0.2s; min-width:60px; text-align:center;
-            }
-            .mobile-nav a i { font-size:20px; transition:transform 0.2s; }
-            .mobile-nav a.active { color:#fff; background:rgba(255,255,255,0.14); }
-            .mobile-nav a.active i { transform:translateY(-2px); filter:drop-shadow(0 2px 8px rgba(255,255,255,0.4)); }
-        }
-
-        @media (max-width:480px) {
-            .cards-grid { padding:12px 12px 0; }
-        }
-    </style>
+    <title>Document</title>
 </head>
+<style>
+    * {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(239, 239, 239);
+    }
+    form {
+        background: white;
+        padding: 50px 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 8px;
+        box-shadow: 4px 4px 20px rgb(224, 224, 224);
+    }
+    form h2 {
+        margin-top: 0;
+    }
+    .image {
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+    .inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    input {
+        width: 100%;
+        padding: 5px;
+        border-radius: 8px;
+        border: 1px solid rgb(173, 173, 173);
+    }
+
+    button {
+        width: 50%;
+        height: 30px;
+        border: none;
+        border-radius: 8px;
+        background: rgb(23, 141, 181);
+        color: white;
+    }
+    button:hover {
+        background-color: rgb(65, 164, 197);
+    }
+</style>
 <body>
+    <form id="form">
 
-<!-- Mobile-only header (shown via CSS on small screens) -->
-<header id="mobileHeader">
-    <h1>TREASURE DASHBOARD</h1>
-    <div class="intro">
-    <p>Manage your clients transaction daily</p>
-</div>
-</header>
-
-
-<main>
-    <!-- Desktop sidebar -->
-    <aside>
-        <h2>Treasure MS</h2>
-        <ul>
-            <li><a href="/" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
-            <li><a href="/add"><i class="fa-solid fa-user-plus"></i> New Client</a></li>
-            <li><a href="/view_clients"><i class="fa-solid fa-users"></i> Manage Clients</a></li>
-            <li><a href="/analytics"><i class="fa-solid fa-chart-line"></i> Analysis</a></li>
-        </ul>
-        <div class="sidebar-footer">&copy; 2025 Treasure MS</div>
-    </aside>
-
-    <!-- Main content -->
-    <div class="page-content">
-
-        <div class="page-header">
-            <h1>Dashboard</h1>
-            <p>Welcome back — manage your clients and transactions below.</p>
+        <div class="image">
+            <img src="./logo.png" alt="image" height="100px" width="100px">
         </div>
-
-        <div class="cards-grid">
-
-            <a href="/add" class="card">
-                <div class="card-icon"><i class="fa-solid fa-user-plus"></i></div>
-                <div class="card-text">
-                    <h2>Add Client</h2>
-                    <p>Register a new client with name, phone, and email.</p>
-                </div>
-                <button class="card-btn"><i class="fa-solid fa-arrow-right"></i> Go</button>
-            </a>
-
-            <a href="/view_clients" class="card">
-                <div class="card-icon"><i class="fa-solid fa-users"></i></div>
-                <div class="card-text">
-                    <h2>Manage Clients</h2>
-                    <p>View, search and manage client transactions.</p>
-                </div>
-                <button class="card-btn"><i class="fa-solid fa-arrow-right"></i> Go</button>
-            </a>
-
-            <a href="/analytics" class="card">
-                <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
-                <div class="card-text">
-                    <h2>Analytics</h2>
-                    <p>View charts and financial analysis of the system.</p>
-                </div>
-                <button class="card-btn"><i class="fa-solid fa-arrow-right"></i> Go</button>
-            </a>
-
+        <h2>Welcome Back</h2>
+        <div class="inputs">
+            <input type="text" name="" id="email" placeholder="test@jstreasure.dn">
+            <input type="password" name="" id="password" placeholder="password">
+            <button type="submit">Login</button>
         </div>
-    </div>
-</main>
+    </form>
 
-<!-- Mobile bottom nav -->
-<nav class="mobile-nav">
-    <a href="/" class="active"><i class="fa-solid fa-house"></i>Home</a>
-    <a href="/add"><i class="fa-solid fa-user-plus"></i>Add</a>
-    <a href="/view_clients"><i class="fa-solid fa-users"></i>Clients</a>
-    <a href="/analytics"><i class="fa-solid fa-chart-line"></i>Analytics</a>
-</nav>
+    <script>
+document.getElementById("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    // LOGIN REQUEST
+    const loginRes = await fetch("/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+    });
+
+    const data = await loginRes.json();
+
+    if (!data.token) {
+        alert("Login failed");
+        return;
+    }
+
+    // SAVE TOKEN
+    localStorage.setItem("token", data.token);
+
+    // GET TOKEN
+    const token = localStorage.getItem("token");
+
+    console.log("TOKEN:", token);
+
+    // PROTECTED REQUEST
+    const res = await fetch("/add", {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+
+    console.log(result);
+});
+</script>
 </body>
 </html>

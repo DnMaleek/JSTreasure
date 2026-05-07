@@ -5,6 +5,8 @@ const cors =require ('cors')
 const bodyParser=require ('body-parser')
 const dotenv= require ('dotenv')
 const { error } = require('console')
+const jwt = require ('jsonwebtoken')
+const bcrypt = require ("bcryptjs")
 
 //initialize express
 const app = express()
@@ -38,7 +40,128 @@ const db = mysql.createConnection(
 
 //Routes
 app.get('/', (req,res) =>{
-    res.sendFile(path.join(__dirname,'public','index.html'))
+    res.sendFile(path.join(__dirname,'public','login.html'))
+})
+
+//LOGIN and REGISTER with jwt token implementation PLUS encryption
+app.post('/register',async (req, res) => {
+    const {email,password} = req.body;
+
+    const sqlquery="SELECT * FROM users WHERE email = ?"
+
+    db.query(sqlquery,[email],async (err,result) => {
+        if (err) {
+            return res.status(400).json({message:"Failed to register user"})
+        }
+
+        if (result.length > 0) {
+            return res.status(400).json({message:'Email already exist'})
+        } else {
+            const hashedPassword =await bcrypt.hash(password, 10);
+            const query = 'INSERT INTO users (email,password) VALUES (?,?)'
+
+            db.query(query, [email,hashedPassword] , (err,result) => {
+                if (err) {
+                    return res.status(400).json({message:"Failed to register user2"})
+                }
+
+                if (result.affectedRows) {
+                    return res.status(200).json({message:"User registerd sucessfully"})
+                }
+            })
+        }
+
+    } )
+})
+
+//login middleware
+
+function authMiddleware(req ,res ,next) {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        return res.status(400).json({message:"Token error"})
+    }
+    
+    const token = authHeader.split(" ")[1]
+    
+    if (blacklist.has(token)) {
+        return res.json({message:"Logged out"})
+    }
+
+    try {
+        const chochote = jwt.verify(token, process.env.JWTSECRET)
+
+        req.user = chochote;
+
+        next();
+    } catch (err) {
+
+        console.log('Token error occured')
+
+        return res.status(500).json({message:'server is down'})
+    }
+}
+
+app.post ('/login',async (req, res) => {
+    const {email, password} = req.body;
+
+    if (!email && !password) {
+        return res.status(400).json({message:"Fill all required fields"})
+    }
+
+    const sqlquery = "SELECT * FROM users WHERE email = ?"
+
+    db.query(sqlquery,[email],async (err, result) => {
+        if (err) {
+            return res.status(400).json({message:'Server error'})
+        }
+        
+        if (result.length == 0) {
+            return res.status(400).json({message:"Create new account"})
+        }
+
+        const user = result[0];
+
+        const isValid =await bcrypt.compare(password, user.password)
+        
+        if (!isValid) {
+            return res.status(500).json({message:"Invalid credentials"})
+        } else {
+            
+            const token = await jwt.sign(
+            {
+                id: user.id,
+                email: user.email
+            },
+            process.env.JWTSECRET,
+            {
+                expiresIn:"1h"
+            }
+        );
+            res.status(200).json({message:"Sucess", token})
+        }
+
+
+    })
+
+})
+
+const blacklist = new Set();
+
+app.post("/logout", (req, res) =>{ 
+
+    const authHeader = req.headers.authorization;
+
+    const token = authHeader.split(" ")[1];
+
+    blacklist.add(token);
+
+    res.status(200).json({message:"Logout sucessfully"})
+})
+
+app.get('/dashboard', authMiddleware, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'))
 })
 
 app.get('/add', (req,res) =>{
@@ -114,7 +237,7 @@ app.get('/view_clients_data', (req, res) => {
 
 
 //Add Client
-app.post('/add', (req,res) =>{
+app.post('/add', authMiddleware, (req,res) =>{
    const {Name, Email , Tel} = req.body;
 
    if(!Name || !Email || !Tel ) {
@@ -498,6 +621,6 @@ app.get('/analytics_chart_data', (req, res) => {
     });
 });
 
-app.listen(5000,()=>{
-    console.log("http://localhost:5000")
+app.listen(3000,()=>{
+    console.log("http://localhost:3000")
 })
